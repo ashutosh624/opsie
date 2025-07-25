@@ -47,20 +47,20 @@ def run_api_server():
 async def main():
     """Main entry point."""
     logger.info("Starting AI Agent Slack Bot...")
-    
+
     # Validate configuration
     if not config.validate_required_config():
         logger.error("Configuration validation failed. Please check your .env file.")
         sys.exit(1)
-    
+
     # Print current configuration (without sensitive data)
     logger.info(f"Default AI Provider: {config.default_ai_provider}")
     logger.info(f"Server: {config.host}:{config.port}")
     logger.info(f"Debug Mode: {config.debug}")
-    
+
     # Choose run mode based on configuration
     mode = input("Run mode - (1) Slack bot only, (2) API server only, (3) Both [default: 3]: ").strip()
-    
+
     if mode == "1":
         await run_slack_bot()
     elif mode == "2":
@@ -68,16 +68,16 @@ async def main():
     else:
         # Run both Slack bot and API server
         logger.info("Starting both Slack bot and API server...")
-        
+
         # Create tasks for both services
         slack_task = asyncio.create_task(run_slack_bot())
-        
+
         # Run API server in a separate thread since uvicorn.run is blocking
         import threading
         api_thread = threading.Thread(target=run_api_server)
         api_thread.daemon = True
         api_thread.start()
-        
+
         # Wait for Slack bot
         await slack_task
 

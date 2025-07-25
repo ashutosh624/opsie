@@ -81,15 +81,15 @@ async def chat(request: ChatRequest):
             temperature=request.temperature,
             max_tokens=request.max_tokens
         )
-        
+
         model_info = ai_agent.get_current_model_info()
-        
+
         return ChatResponse(
             response=response,
             provider=model_info["provider"],
             model=model_info["model"]
         )
-    
+
     except Exception as e:
         logger.error(f"Chat request failed: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -101,13 +101,13 @@ async def get_models():
     try:
         available_providers = ai_agent.get_available_providers()
         current_model = ai_agent.get_current_model_info()
-        
+
         return {
             "available_providers": available_providers,
             "current_provider": current_model["provider"],
             "current_model": current_model["model"]
         }
-    
+
     except Exception as e:
         logger.error(f"Failed to get models: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -118,23 +118,23 @@ async def switch_model(provider: str):
     """Switch to a different AI model provider."""
     try:
         available_providers = ai_agent.get_available_providers()
-        
+
         if provider not in available_providers:
             raise HTTPException(
                 status_code=400,
                 detail=f"Unknown provider: {provider}. Available: {available_providers}"
             )
-        
+
         # Switch model by processing a dummy message
         await ai_agent.process_message("system", "ping", provider=provider)
         model_info = ai_agent.get_current_model_info()
-        
+
         return {
             "message": f"Switched to {provider}",
             "provider": model_info["provider"],
             "model": model_info["model"]
         }
-    
+
     except HTTPException:
         raise
     except Exception as e:
@@ -148,7 +148,7 @@ async def clear_conversation(user_id: str):
     try:
         await ai_agent.clear_conversation(user_id)
         return {"message": f"Conversation history cleared for user {user_id}"}
-    
+
     except Exception as e:
         logger.error(f"Failed to clear conversation: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
