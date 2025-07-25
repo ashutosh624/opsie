@@ -1,6 +1,7 @@
 import os
 from typing import Dict, Any, Optional
 from dotenv import load_dotenv
+from .constants import GeminiConstants
 
 # Load environment variables from .env file
 load_dotenv()
@@ -27,7 +28,7 @@ class Config:
     
     # Gemini Configuration
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
-    gemini_model: str = os.getenv("GEMINI_MODEL", "gemini-pro")
+    gemini_model: str = os.getenv("GEMINI_MODEL", GeminiConstants.DEFAULT_MODEL)
     
     # Local Model Configuration
     local_model_path: str = os.getenv("LOCAL_MODEL_PATH", "microsoft/DialoGPT-medium")

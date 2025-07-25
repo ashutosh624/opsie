@@ -1,6 +1,7 @@
 from typing import List, Dict, Any
 import google.generativeai as genai
 from ..models.base import AIModelInterface, AIMessage, AIResponse
+from ..constants import GeminiConstants, ErrorMessages
 import logging
 
 logger = logging.getLogger(__name__)
@@ -16,7 +17,7 @@ class GeminiModel(AIModelInterface):
             raise ValueError("Gemini API key is required")
 
         genai.configure(api_key=api_key)
-        self._model_name = config.get("model", "gemini-pro")
+        self._model_name = config.get("model", GeminiConstants.DEFAULT_MODEL)
 
         # Initialize the model
         try:
@@ -52,10 +53,10 @@ class GeminiModel(AIModelInterface):
 
             # Generate response
             generation_config = genai.types.GenerationConfig(
-                temperature=kwargs.get("temperature", 0.7),
-                max_output_tokens=kwargs.get("max_tokens", 4096),
-                top_p=kwargs.get("top_p", 0.9),
-                top_k=kwargs.get("top_k", 40),
+                temperature=kwargs.get("temperature", GeminiConstants.DEFAULT_TEMPERATURE),
+                max_output_tokens=kwargs.get("max_tokens", GeminiConstants.DEFAULT_MAX_OUTPUT_TOKENS),
+                top_p=kwargs.get("top_p", GeminiConstants.DEFAULT_TOP_P),
+                top_k=kwargs.get("top_k", GeminiConstants.DEFAULT_TOP_K),
             )
 
             response = self.model.generate_content(
@@ -64,7 +65,7 @@ class GeminiModel(AIModelInterface):
             )
 
             if not response.text:
-                raise ValueError(f"Empty response from Gemini: ${response}")
+                raise ValueError(f"{ErrorMessages.EMPTY_RESPONSE}: {response}")
 
             # Calculate token usage (approximate)
             prompt_tokens = len(prompt.split())
