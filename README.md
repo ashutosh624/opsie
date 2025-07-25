@@ -7,6 +7,7 @@ A modular AI agent Slack bot with interchangeable AI model providers. This bot s
 - 🤖 **Multiple AI Providers**: Support for OpenAI, Anthropic, Google Gemini, and local Hugging Face models
 - 🔄 **Hot-swappable Models**: Switch between AI providers without restarting
 - 💬 **Slack Integration**: Full Slack bot functionality with mentions and direct messages
+- 🧵 **Thread Support**: Intelligent thread replies with full context awareness
 - 🌐 **REST API**: FastAPI-based API for external integrations
 - 📊 **Health Monitoring**: Built-in health checks for AI models
 - 🗂️ **Conversation Management**: Per-user conversation history tracking
@@ -85,6 +86,17 @@ LOCAL_MODEL_TYPE=huggingface
 - `health` - Check current model health
 - `@bot <message>` - Chat with the bot (mentions)
 - Direct messages work automatically
+- **Thread Replies** - The bot automatically participates in threads when mentioned or when replying to bot messages
+
+### Thread Support Features
+
+The bot intelligently handles Slack threads:
+
+- **Full Context Awareness**: Reads the entire thread history before responding
+- **Smart Thread Detection**: Automatically detects when to participate in threads
+- **Contextual Responses**: Uses thread context to provide relevant answers
+- **Thread Continuity**: Maintains conversation flow within threads
+- **Individual History**: Still maintains per-user conversation history outside of threads
 
 ## REST API Endpoints
 
@@ -207,6 +219,8 @@ CMD ["python", "main.py"]
 3. Add Bot Token Scopes:
    - `app_mentions:read`
    - `chat:write`
+   - `channels:history` (for thread context)
+   - `groups:history` (for private channel threads)
    - `im:history`
    - `im:read`
    - `im:write`
