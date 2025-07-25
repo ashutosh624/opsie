@@ -3,6 +3,7 @@ from ..models.base import AIModelInterface, AIMessage, AIResponse
 from ..providers import ModelFactory
 from ..config import config
 from ..utils.prompt_loader import prompt_loader
+from ..utils.request_categorizer import RequestCategorizer, RequestCategory
 import logging
 
 logger = logging.getLogger(__name__)
@@ -82,17 +83,44 @@ class AIAgent:
         provider: Optional[str] = None,
         **kwargs
     ) -> str:
-        """Process a message within a thread context with software engineering triage."""
+        """Process a message within a thread context with automatic categorization and routing."""
 
         # Switch model if different provider requested
         if provider and self.current_model and provider != self.current_model.provider:
             self._switch_model(provider)
 
+        # First, categorize the request with LLM assistance
+        category = await RequestCategorizer.categorize_request_async(message, thread_context, self.current_model)
+        logger.info(f"Request categorized as: {category.value}")
+
+        # Generate specialized response based on category
+        if category in [RequestCategory.TECHNICAL_ISSUE, RequestCategory.ENGINEERING_QUERY]:
+            # For technical issues and engineering queries, use AI analysis
+            return await self._process_technical_thread_message(user_id, message, thread_context, category, **kwargs)
+        else:
+            # For other categories, use the categorizer's response
+            return RequestCategorizer.generate_response(category, message, thread_context)
+
+    async def _process_technical_thread_message(
+        self,
+        user_id: str,
+        message: str,
+        thread_context: List[Dict[str, Any]],
+        category: RequestCategory,
+        **kwargs
+    ) -> str:
+        """Process technical thread messages with AI analysis."""
+        
         # Build conversation from thread context
         thread_messages = []
 
         # Add specialized system message for software engineering triage
-        system_prompt = self._build_software_engineer_prompt()
+        if category == RequestCategory.TECHNICAL_ISSUE:
+            system_prompt = self._build_software_engineer_prompt()
+        else:
+            # For engineering queries, use a more general prompt
+            system_prompt = self._build_engineering_support_prompt()
+        
         thread_messages.append(AIMessage(role="system", content=system_prompt))
 
         # Convert thread context to AIMessage format
@@ -115,8 +143,6 @@ class AIAgent:
             if not self.current_model:
                 raise RuntimeError("No AI model loaded")
 
-            logger.info("Thread messages", thread_messages)
-
             response = await self.current_model.generate_response(
                 messages=thread_messages,
                 **kwargs
@@ -136,13 +162,16 @@ class AIAgent:
             if len(self.conversation_history[user_id]) > 10:
                 self.conversation_history[user_id] = self.conversation_history[user_id][-10:]
 
-            logger.info(response.content)
-
-            return response.content
+            # Add category information to the response
+            category_info = f"\n\n---\n📂 **Category:** {category.value.replace('_', ' ').title()}"
+            routing_info = RequestCategorizer.get_routing_info(category)
+            category_info += f"\n🎯 **Action:** {routing_info.get('action', 'process').replace('_', ' ').title()}"
+            
+            return response.content + category_info
 
         except Exception as e:
-            logger.error("Error generating thread response: %s", str(e))
-            return "Sorry, I encountered an error while processing your message in this thread. Please try again."
+            logger.error("Error generating AI response: %s", str(e))
+            return "Sorry, I encountered an error while processing your message. Please try again."
 
     def _build_software_engineer_prompt(self) -> str:
         """Build a specialized system prompt for software engineering triage."""
@@ -155,6 +184,20 @@ class AIAgent:
             logger.warning("Failed to load software engineer triage prompt, using fallback")
             base_prompt = """You are a Senior Software Engineer acting as a technical triage specialist in a Slack support thread. 
             Analyze technical issues, verify debugging information completeness, and provide technical insights."""
+
+        return base_prompt
+
+    def _build_engineering_support_prompt(self) -> str:
+        """Build a system prompt for engineering support queries."""
+        
+        # Load base prompt from file
+        base_prompt = prompt_loader.load_prompt("engineering_support")
+        
+        if not base_prompt:
+            # Fallback prompt if file loading fails
+            logger.warning("Failed to load engineering support prompt, using fallback")
+            base_prompt = """You are a Senior Software Engineer providing technical support to internal engineering teams. 
+            Provide detailed technical insights, reference documentation, and offer collaborative solutions."""
 
         return base_prompt
 
