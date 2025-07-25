@@ -109,15 +109,15 @@ class SlackBot:
             # Remove bot mention from text
             text = re.sub(r"<@\w+>", "", text).strip()
 
-            if text:
-                # If this is in a thread, get the thread context
-                if event.get("thread_ts"):
-                    thread_context = await self._get_thread_context(client, channel_id, thread_ts)
-                    print(user_id, text, thread_context)
-                    response = await self.ai_agent.process_thread_message(user_id, text, thread_context)
-                else:
-                    response = await self.ai_agent.process_message(user_id, text)
-                
+            # If this is in a thread, get the thread context
+            if event.get("thread_ts"):
+                thread_context = await self._get_thread_context(client, channel_id, thread_ts)
+                print(user_id, text, thread_context)
+                response = await self.ai_agent.process_thread_message(user_id, text, thread_context)
+            else:
+                response = await self.ai_agent.process_message(user_id, text)
+
+            if text or event.get("thread_ts"):
                 # Reply in thread
                 await say(response, thread_ts=thread_ts)
             else:
