@@ -90,13 +90,45 @@ LOCAL_MODEL_TYPE=huggingface
 
 ### Thread Support Features
 
-The bot intelligently handles Slack threads:
+The bot intelligently handles Slack threads with specialized software engineering capabilities:
 
+- **Software Engineering Triage**: Acts as a senior software engineer to analyze technical issues
+- **Debugging Format Verification**: Ensures proper debugging information is provided
+- **Issue Severity Assessment**: Evaluates impact, urgency, and escalation needs
 - **Full Context Awareness**: Reads the entire thread history before responding
 - **Smart Thread Detection**: Automatically detects when to participate in threads
-- **Contextual Responses**: Uses thread context to provide relevant answers
-- **Thread Continuity**: Maintains conversation flow within threads
-- **Individual History**: Still maintains per-user conversation history outside of threads
+- **Channel-Specific Guidelines**: Uses channel descriptions to enforce formatting requirements
+- **Technical Analysis**: Provides root cause analysis and actionable recommendations
+- **Escalation Assessment**: Determines when issues need escalation to specialized teams
+
+### Software Engineering Capabilities
+
+When participating in threads, the bot acts as a **Senior Software Engineer** and:
+
+1. **Triages Technical Issues**:
+   - Assesses severity (Critical/High/Medium/Low)
+   - Evaluates customer and system impact
+   - Determines urgency and escalation needs
+
+2. **Verifies Debugging Information**:
+   - Checks for complete problem description
+   - Ensures steps to reproduce are provided
+   - Validates environment details are included
+   - Confirms error messages/logs are shared
+   - Requests missing information when needed
+
+3. **Provides Technical Analysis**:
+   - Offers initial root cause hypotheses  
+   - Suggests troubleshooting steps
+   - Recommends immediate actions
+   - Identifies potential workarounds
+
+4. **Enforces Standards**:
+   - Guides engineers to follow proper debugging format
+   - References channel-specific guidelines
+   - Ensures consistency across support threads
+
+See `docs/debugging-format.md` for the complete debugging format template.
 
 ## REST API Endpoints
 
@@ -220,7 +252,9 @@ CMD ["python", "main.py"]
    - `app_mentions:read`
    - `chat:write`
    - `channels:history` (for thread context)
+   - `channels:read` (for channel information)
    - `groups:history` (for private channel threads)
+   - `groups:read` (for private channel information)
    - `im:history`
    - `im:read`
    - `im:write`

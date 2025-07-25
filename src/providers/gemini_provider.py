@@ -53,7 +53,7 @@ class GeminiModel(AIModelInterface):
             # Generate response
             generation_config = genai.types.GenerationConfig(
                 temperature=kwargs.get("temperature", 0.7),
-                max_output_tokens=kwargs.get("max_tokens", 1000),
+                max_output_tokens=kwargs.get("max_tokens", 4096),
                 top_p=kwargs.get("top_p", 0.9),
                 top_k=kwargs.get("top_k", 40),
             )
@@ -64,7 +64,7 @@ class GeminiModel(AIModelInterface):
             )
 
             if not response.text:
-                raise ValueError("Empty response from Gemini")
+                raise ValueError(f"Empty response from Gemini: ${response}")
 
             # Calculate token usage (approximate)
             prompt_tokens = len(prompt.split())

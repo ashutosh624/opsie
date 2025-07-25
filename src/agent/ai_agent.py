@@ -2,6 +2,7 @@ from typing import List, Dict, Any, Optional
 from ..models.base import AIModelInterface, AIMessage, AIResponse
 from ..providers import ModelFactory
 from ..config import config
+from ..utils.prompt_loader import prompt_loader
 import logging
 
 logger = logging.getLogger(__name__)
@@ -81,7 +82,7 @@ class AIAgent:
         provider: Optional[str] = None,
         **kwargs
     ) -> str:
-        """Process a message within a thread context."""
+        """Process a message within a thread context with software engineering triage."""
 
         # Switch model if different provider requested
         if provider and self.current_model and provider != self.current_model.provider:
@@ -90,11 +91,9 @@ class AIAgent:
         # Build conversation from thread context
         thread_messages = []
 
-        # Add system message for context
-        thread_messages.append(AIMessage(
-            role="system",
-            content="You are participating in a Slack thread conversation. Consider the full context when responding."
-        ))
+        # Add specialized system message for software engineering triage
+        system_prompt = self._build_software_engineer_prompt()
+        thread_messages.append(AIMessage(role="system", content=system_prompt))
 
         # Convert thread context to AIMessage format
         for ctx_msg in thread_context:
@@ -116,7 +115,7 @@ class AIAgent:
             if not self.current_model:
                 raise RuntimeError("No AI model loaded")
 
-            print(thread_messages)
+            logger.info("Thread messages", thread_messages)
 
             response = await self.current_model.generate_response(
                 messages=thread_messages,
@@ -137,19 +136,33 @@ class AIAgent:
             if len(self.conversation_history[user_id]) > 10:
                 self.conversation_history[user_id] = self.conversation_history[user_id][-10:]
 
-            print(response.content)
+            logger.info(response.content)
 
             return response.content
 
         except Exception as e:
-            logger.error(f"Error generating thread response: {str(e)}")
+            logger.error("Error generating thread response: %s", str(e))
             return "Sorry, I encountered an error while processing your message in this thread. Please try again."
+
+    def _build_software_engineer_prompt(self) -> str:
+        """Build a specialized system prompt for software engineering triage."""
+        
+        # Load base prompt from file
+        base_prompt = prompt_loader.load_prompt("software_engineer_triage")
+        
+        if not base_prompt:
+            # Fallback prompt if file loading fails
+            logger.warning("Failed to load software engineer triage prompt, using fallback")
+            base_prompt = """You are a Senior Software Engineer acting as a technical triage specialist in a Slack support thread. 
+            Analyze technical issues, verify debugging information completeness, and provide technical insights."""
+
+        return base_prompt
 
     async def clear_conversation(self, user_id: str) -> None:
         """Clear conversation history for a user."""
         if user_id in self.conversation_history:
             del self.conversation_history[user_id]
-            logger.info(f"Cleared conversation history for user {user_id}")
+            logger.info("Cleared conversation history for user %s", user_id)
 
     def get_available_providers(self) -> List[str]:
         """Get list of available AI model providers."""
@@ -177,7 +190,7 @@ class AIAgent:
                 "provider": self.current_model.provider,
                 "model": self.current_model.model_name
             }
-        except Exception as e:
+        except (ConnectionError, TimeoutError, ValueError) as e:
             return {
                 "status": "error",
                 "message": str(e),
