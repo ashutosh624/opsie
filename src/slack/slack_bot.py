@@ -6,6 +6,7 @@ import logging
 
 from ..agent.ai_agent import AIAgent
 from ..config import config
+from ..utils.slack_formatter import SlackFormatter
 
 logger = logging.getLogger(__name__)
 
@@ -112,14 +113,15 @@ class SlackBot:
             # If this is in a thread, get the thread context
             if event.get("thread_ts"):
                 thread_context = await self._get_thread_context(client, channel_id, thread_ts)
-                print(user_id, text, thread_context)
                 response = await self.ai_agent.process_thread_message(user_id, text, thread_context)
             else:
                 response = await self.ai_agent.process_message(user_id, text)
 
             if text or event.get("thread_ts"):
-                # Reply in thread
-                await say(response, thread_ts=thread_ts)
+                # Format the response for Slack and reply in thread
+                formatted_response = SlackFormatter.format_response(response)
+                formatted_response = SlackFormatter.truncate_for_slack(formatted_response)
+                await say(text=formatted_response, thread_ts=thread_ts)
             else:
                 await say("Hello! How can I help you today?", thread_ts=thread_ts)
 
@@ -138,7 +140,9 @@ class SlackBot:
             # Handle direct messages (IM channels)
             if message.get("channel_type") == "im":
                 response = await self.ai_agent.process_message(user_id, text)
-                await say(response)
+                formatted_response = SlackFormatter.format_response(response)
+                formatted_response = SlackFormatter.truncate_for_slack(formatted_response)
+                await say(formatted_response)
             
             # Handle thread replies in channels (when bot is mentioned in thread or replying to bot)
             elif thread_ts:
@@ -167,7 +171,9 @@ class SlackBot:
                         # Get thread context and respond
                         thread_context = await self._get_thread_context(client, channel_id, thread_ts)
                         response = await self.ai_agent.process_thread_message(user_id, text, thread_context)
-                        await say(response, thread_ts=thread_ts)
+                        formatted_response = SlackFormatter.format_response(response)
+                        formatted_response = SlackFormatter.truncate_for_slack(formatted_response)
+                        await say(formatted_response, thread_ts=thread_ts)
                         
                 except Exception as e:
                     logger.error("Error handling thread reply: %s", str(e))
