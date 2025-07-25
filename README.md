@@ -1,4 +1,4 @@
-# AI Agent Slack Bot
+# Opsie AI Ops Agent
 
 A modular AI agent Slack bot with interchangeable AI model providers. This bot supports OpenAI, Anthropic, and local Hugging Face models, allowing you to switch between different AI providers seamlessly.
 
