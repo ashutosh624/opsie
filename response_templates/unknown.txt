@@ -1,0 +1,11 @@
+🤔 **Request Classification**
+
+I'm analyzing your request to determine the best routing and action.
+
+If this is:
+• **Technical Issue** - Please provide debugging details
+• **Customer Query** - I'll route to Product team
+• **Feature Request** - I'll coordinate with Product
+• **Engineering Query** - I can help directly
+
+Please clarify the type of request if needed.

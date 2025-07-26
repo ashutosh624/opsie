@@ -1,0 +1,10 @@
+🔀 **PR Review Request**
+
+Code review requests should be posted in the dedicated review channel.
+
+📍 **Please redirect to:** `#mobile-pr-reviews`
+
+This ensures your PR gets proper visibility and timely review from the team.
+
+**Priority:** {priority}
+**Routing:** {route_to}

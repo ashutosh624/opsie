@@ -1,0 +1,8 @@
+📋 **FYI Acknowledged**
+
+Thank you for the update. I've noted this information.
+
+{jira_note}
+
+**Priority:** {priority}
+**Routing:** {route_to}

@@ -1,0 +1,11 @@
+👥 **Customer Query Detected**
+
+This appears to be a customer-related query that needs Product team review.
+
+🔄 **Next Steps:**
+• Routing to DF Product team for review
+• Product team will provide the final customer response
+• I'll ensure proper context is maintained
+
+**Priority:** {priority}
+**Routing:** {route_to}

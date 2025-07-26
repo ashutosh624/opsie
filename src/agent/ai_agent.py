@@ -94,7 +94,7 @@ class AIAgent:
         logger.info(f"Request categorized as: {category.value}")
 
         # Generate specialized response based on category
-        if category in [RequestCategory.TECHNICAL_ISSUE, RequestCategory.ENGINEERING_QUERY]:
+        if category in [RequestCategory.TECHNICAL_ISSUE, RequestCategory.ENGINEERING_QUERY, RequestCategory.CUSTOMER_QUERY, RequestCategory.FEATURE_ENABLEMENT]:
             # For technical issues and engineering queries, use AI analysis
             return await self._process_technical_thread_message(user_id, message, thread_context, category, **kwargs)
         else:
@@ -110,17 +110,23 @@ class AIAgent:
         **kwargs
     ) -> str:
         """Process technical thread messages with AI analysis."""
-        
+
         # Build conversation from thread context
         thread_messages = []
 
         # Add specialized system message for software engineering triage
         if category == RequestCategory.TECHNICAL_ISSUE:
             system_prompt = self._build_software_engineer_prompt()
-        else:
+        elif category == RequestCategory.ENGINEERING_QUERY:
             # For engineering queries, use a more general prompt
             system_prompt = self._build_engineering_support_prompt()
-        
+        elif category == RequestCategory.CUSTOMER_QUERY:
+            system_prompt = self._build_customer_query_prompt()
+        elif category == RequestCategory.FEATURE_ENABLEMENT:
+            system_prompt = self._build_feature_enablement_prompt()
+        else:
+            system_prompt = self._build_feature_request_prompt()
+
         thread_messages.append(AIMessage(role="system", content=system_prompt))
 
         # Convert thread context to AIMessage format
@@ -163,11 +169,17 @@ class AIAgent:
                 self.conversation_history[user_id] = self.conversation_history[user_id][-10:]
 
             # Add category information to the response
-            category_info = f"\n\n---\n📂 **Category:** {category.value.replace('_', ' ').title()}"
-            routing_info = RequestCategorizer.get_routing_info(category)
-            category_info += f"\n🎯 **Action:** {routing_info.get('action', 'process').replace('_', ' ').title()}"
-            
-            return response.content + category_info
+            # category_info = f"\n\n---\n📂 **Category:** {category.value.replace('_', ' ').title()}"
+            # routing_info = RequestCategorizer.get_routing_info(category)
+            # category_info += f"\n🎯 **Action:** {routing_info.get('action', 'process').replace('_', ' ').title()}"
+
+            if category == RequestCategory.CUSTOMER_QUERY:
+                category_info = f"\n\n---\n📂 **Category:** {category.value.replace('_', ' ').title()}"
+                category_info += "\n🎯 **Action:** Requesting @df-product for customer communication."
+
+                return response.content + category_info
+
+            return response.content
 
         except Exception as e:
             logger.error("Error generating AI response: %s", str(e))
@@ -175,10 +187,10 @@ class AIAgent:
 
     def _build_software_engineer_prompt(self) -> str:
         """Build a specialized system prompt for software engineering triage."""
-        
+
         # Load base prompt from file
         base_prompt = prompt_loader.load_prompt("software_engineer_triage")
-        
+
         if not base_prompt:
             # Fallback prompt if file loading fails
             logger.warning("Failed to load software engineer triage prompt, using fallback")
@@ -198,6 +210,45 @@ class AIAgent:
             logger.warning("Failed to load engineering support prompt, using fallback")
             base_prompt = """You are a Senior Software Engineer providing technical support to internal engineering teams. 
             Provide detailed technical insights, reference documentation, and offer collaborative solutions."""
+
+        return base_prompt
+    
+    def _build_customer_query_prompt(self) -> str:
+        """Build a system prompt for customer support queries."""
+
+        # Load base prompt from file
+        base_prompt = prompt_loader.load_prompt("customer_query")
+
+        if not base_prompt:
+                        # Fallback prompt if file loading fails
+            logger.warning("Failed to load customer query prompt, using fallback")
+            base_prompt = """You are a Senior Software Engineer providing technical support to internal engineering teams."""
+
+        return base_prompt
+    
+    def _build_feature_enablement_prompt(self) -> str:
+        """Build a system prompt for feature enablement queries."""
+
+        # Load base prompt from file
+        base_prompt = prompt_loader.load_prompt("feature_enablement")
+
+        if not base_prompt:
+            # Fallback prompt if file loading fails
+            logger.warning("Failed to load feature enablement prompt, using fallback")
+            base_prompt = """You are a Senior Software Engineer providing technical support to internal engineering teams."""
+
+        return base_prompt
+
+    def _build_feature_request_prompt(self) -> str:
+        """Build a system prompt for feature requests."""
+
+        # Load base prompt from file
+        base_prompt = prompt_loader.load_prompt("feature_request")
+
+        if not base_prompt:
+            # Fallback prompt if file loading fails
+            logger.warning("Failed to load feature enablement prompt, using fallback")
+            base_prompt = """You are a Senior Software Engineer providing technical support to internal engineering teams."""
 
         return base_prompt
 

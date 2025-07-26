@@ -1,0 +1,9 @@
+⚙️ **Engineering Query**
+
+I'll handle this internal engineering query directly.
+
+{confluence_note}
+{df_owned_note}
+
+**Priority:** {priority}
+**Routing:** {route_to}

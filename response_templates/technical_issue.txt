@@ -1,0 +1,12 @@
+🔧 **Technical Issue Detected**
+
+I'm triaging this technical issue and will validate the debugging information.
+
+⚠️ **Missing Information (if applicable):**
+{missing_info_list}
+
+Please provide the missing details for proper debugging. The complete debugging format is available in the channel description.
+
+**Priority:** {priority}
+**Routing:** {route_to}
+**Action:** {action}

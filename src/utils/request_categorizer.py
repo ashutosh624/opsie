@@ -9,6 +9,7 @@ from enum import Enum
 import logging
 from ..models.base import AIMessage
 from ..utils.prompt_loader import prompt_loader
+from ..utils.template_loader import template_loader
 
 logger = logging.getLogger(__name__)
 
@@ -182,7 +183,7 @@ class RequestCategorizer:
         
         try:
             # Generate response using our AI model interface
-            response = await ai_model.generate_response(messages, max_tokens=1024)
+            response = await ai_model.generate_response(messages, max_tokens=4096)
             
             # Parse the response to extract category
             category_text = response.content.strip().lower()
@@ -403,11 +404,7 @@ class RequestCategorizer:
     @staticmethod
     def _generate_technical_issue_response(routing_info: Dict[str, Any], text: str, thread_context: List[Dict[str, Any]] | None = None) -> str:
         """Generate response for technical issues."""
-        response = "🔧 **Technical Issue Detected**\n\n"
-        response += "I'm triaging this technical issue and will validate the debugging information.\n\n"
-        
         # Check for missing debugging info
-        required_info = routing_info.get("required_info", [])
         missing_info = []
         
         text_lower = text.lower()
@@ -418,117 +415,87 @@ class RequestCategorizer:
         if "environment" not in text_lower and "version" not in text_lower:
             missing_info.append("Environment details")
         
-        if missing_info:
-            response += "⚠️ **Missing Information:**\n"
-            for info in missing_info:
-                response += f"• {info}\n"
-            response += "\nPlease provide the missing details for proper debugging. "
-            response += "The complete debugging format is available in the channel description.\n\n"
+        template_vars = {
+            "missing_info": missing_info,
+            "priority": routing_info.get('priority', 'medium').title(),
+            "route_to": routing_info.get('route_to', 'ops_debugging').replace('_', ' ').title(),
+            "action": routing_info.get('action', 'validate_and_triage').replace('_', ' ').title(),
+            "text": text
+        }
         
-        response += f"**Priority:** {routing_info.get('priority', 'medium').title()}\n"
-        response += f"**Routing:** {routing_info.get('route_to', 'ops_debugging').replace('_', ' ').title()}\n"
-        response += f"**Action:** {routing_info.get('action', 'validate_and_triage').replace('_', ' ').title()}"
-        
-        return response
+        response = template_loader.format_template("technical_issue", **template_vars)
+        return response or "Technical issue detected. Please provide debugging details."
     
     @staticmethod
     def _generate_fyi_response(routing_info: Dict[str, Any], text: str) -> str:
         """Generate response for FYI messages."""
-        response = "📋 **FYI Acknowledged**\n\n"
-        response += "Thank you for the update. I've noted this information.\n\n"
+        template_vars = {
+            "priority": routing_info.get('priority', 'low').title(),
+            "route_to": routing_info.get('route_to', 'ops_team').replace('_', ' ').title(),
+            "text": text
+        }
         
-        if "jira" in text.lower():
-            response += "I see this relates to a Jira ticket. I'll track any follow-up actions needed.\n\n"
-        
-        response += f"**Priority:** {routing_info.get('priority', 'low').title()}\n"
-        response += f"**Routing:** {routing_info.get('route_to', 'ops_team').replace('_', ' ').title()}"
-        
-        return response
+        response = template_loader.format_template("fyi", **template_vars)
+        return response or "FYI acknowledged. Thank you for the update."
     
     @staticmethod
     def _generate_customer_query_response(routing_info: Dict[str, Any], text: str) -> str:
         """Generate response for customer queries."""
-        response = "👥 **Customer Query Detected**\n\n"
-        response += "This appears to be a customer-related query that needs Product team review.\n\n"
-        response += "🔄 **Next Steps:**\n"
-        response += "• Routing to DF Product team for review\n"
-        response += "• Product team will provide the final customer response\n"
-        response += "• I'll ensure proper context is maintained\n\n"
+        template_vars = {
+            "priority": routing_info.get('priority', 'medium').title(),
+            "route_to": routing_info.get('route_to', 'df_product').replace('_', ' ').title()
+        }
         
-        response += f"**Priority:** {routing_info.get('priority', 'medium').title()}\n"
-        response += f"**Routing:** {routing_info.get('route_to', 'df_product').replace('_', ' ').title()}"
-        
-        return response
+        response = template_loader.format_template("customer_query", **template_vars)
+        return response or "Customer query detected. Routing to Product team for review."
     
     @staticmethod
     def _generate_engineering_query_response(routing_info: Dict[str, Any], text: str) -> str:
         """Generate response for engineering queries."""
-        response = "⚙️ **Engineering Query**\n\n"
-        response += "I'll handle this internal engineering query directly.\n\n"
+        template_vars = {
+            "priority": routing_info.get('priority', 'medium').title(),
+            "route_to": routing_info.get('route_to', 'df_ops').replace('_', ' ').title(),
+            "text": text
+        }
         
-        if "confluence" in text.lower():
-            response += "I'll check our Confluence documentation for relevant context.\n"
-        if "df-owned" in text.lower() or "df owned" in text.lower():
-            response += "This relates to DF-owned components. I'll provide technical guidance.\n\n"
-        
-        response += f"**Priority:** {routing_info.get('priority', 'medium').title()}\n"
-        response += f"**Routing:** {routing_info.get('route_to', 'df_ops').replace('_', ' ').title()}"
-        
-        return response
+        response = template_loader.format_template("engineering_query", **template_vars)
+        return response or "Engineering query detected. I'll handle this directly."
     
     @staticmethod
     def _generate_feature_request_response(routing_info: Dict[str, Any], text: str) -> str:
         """Generate response for feature requests."""
-        response = "✨ **New Feature Request**\n\n"
-        response += "I've identified this as a new feature request from customer demand.\n\n"
-        response += "🔄 **Next Steps:**\n"
-        response += "• Verifying feature availability in current roadmap\n"
-        response += "• Routing to DF Product team for evaluation\n"
-        response += "• Will provide feasibility assessment\n\n"
+        template_vars = {
+            "priority": routing_info.get('priority', 'medium').title(),
+            "route_to": routing_info.get('route_to', 'df_product').replace('_', ' ').title()
+        }
         
-        response += f"**Priority:** {routing_info.get('priority', 'medium').title()}\n"
-        response += f"**Routing:** {routing_info.get('route_to', 'df_product').replace('_', ' ').title()}"
-        
-        return response
+        response = template_loader.format_template("feature_request", **template_vars)
+        return response or "Feature request detected. Routing to Product team for evaluation."
     
     @staticmethod
     def _generate_feature_enablement_response(routing_info: Dict[str, Any], text: str) -> str:
         """Generate response for feature enablement."""
-        response = "🔧 **Feature Enablement Request**\n\n"
-        response += "I'll validate feature support and coordinate enablement.\n\n"
-        response += "🔄 **Next Steps:**\n"
-        response += "• Validating feature support for the environment\n"
-        response += "• Coordinating with DF Product for enablement\n"
-        response += "• Will provide enablement timeline\n\n"
+        template_vars = {
+            "priority": routing_info.get('priority', 'medium').title(),
+            "route_to": routing_info.get('route_to', 'df_product').replace('_', ' ').title()
+        }
         
-        response += f"**Priority:** {routing_info.get('priority', 'medium').title()}\n"
-        response += f"**Routing:** {routing_info.get('route_to', 'df_product').replace('_', ' ').title()}"
-        
-        return response
+        response = template_loader.format_template("feature_enablement", **template_vars)
+        return response or "Feature enablement request detected. Coordinating with Product team."
     
     @staticmethod
     def _generate_pr_review_response(routing_info: Dict[str, Any], text: str) -> str:
         """Generate response for PR review requests."""
-        response = "🔀 **PR Review Request**\n\n"
-        response += "Code review requests should be posted in the dedicated review channel.\n\n"
-        response += "📍 **Please redirect to:** `#mobile-pr-reviews`\n\n"
-        response += "This ensures your PR gets proper visibility and timely review from the team.\n\n"
+        template_vars = {
+            "priority": routing_info.get('priority', 'low').title(),
+            "route_to": routing_info.get('route_to', 'mobile_pr_reviews').replace('_', ' ').title()
+        }
         
-        response += f"**Priority:** {routing_info.get('priority', 'low').title()}\n"
-        response += f"**Routing:** {routing_info.get('route_to', 'mobile_pr_reviews').replace('_', ' ').title()}"
-        
-        return response
+        response = template_loader.format_template("pr_review", **template_vars)
+        return response or "PR review request detected. Please use the dedicated review channel."
     
     @staticmethod
     def _generate_unknown_response(text: str) -> str:
         """Generate response for unknown category."""
-        response = "🤔 **Request Classification**\n\n"
-        response += "I'm analyzing your request to determine the best routing and action.\n\n"
-        response += "If this is:\n"
-        response += "• **Technical Issue** - Please provide debugging details\n"
-        response += "• **Customer Query** - I'll route to Product team\n"
-        response += "• **Feature Request** - I'll coordinate with Product\n"
-        response += "• **Engineering Query** - I can help directly\n\n"
-        response += "Please clarify the type of request if needed."
-        
-        return response
+        response = template_loader.load_template("unknown")
+        return response or "Request received. Analyzing to determine best routing and action."
