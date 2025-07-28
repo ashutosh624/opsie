@@ -1,0 +1,1516 @@
+Thread,Predicted category,AI Response,Remarks
+"Hello @df-product @device-features-ops
+Group ID: 3810472
+Company: Wellsfargo
+The WellsFargo users are facing an issue wherein the image is getting auto-captured when using the Image Injection feature on both App Live and App Automate
+On 'App Live' the issue is intermittent
+The customer wants to know if we can add a delay of 10-15 seconds before auto-capturing the image on both AA and AL
+Ticket: https://browserstackhelp.freshdesk.com/a/tickets/1417861
+cc: @live-support-team @Chandita Mandal",,,
+"From: @Mandar Kulkarni
+@device-features-ops
+Which feature is issue related to?
+Video injection
+For which OS?
+Android
+Product?
+AppLive
+What is the issue?
+Code not getting detected in the video injection
+Please describe the issue (in detail)
+Customer is using a video for injection Code for their application. They are using Scandit https://www.scandit.com/ video kernel in their app. The application opens but the code is not scanned, I have added the padding as part of the debugging steps.
+Attaching the verbose logs from the session on App Live.
+Expected Behaviour
+It should scan the first image and then wait for the next image.
+Actual Behaviour
+It does not scan and just shows 0/2.
+Share debugging done (in detail)
+App does not crash when video injection is used. Locally works fine on physical device.
+No
+App is using Scandit video kernel, was able to find MockActivity:captureIntent: called with intent: Intent { cmp=com.xpo.drivermobile.lastmile.RN/net.openid.appauth.AuthorizationManagementActivity (has extras) } requestCode: 52 line in the logs.
+Did not try since please enable the Preview Layer Mocking for grp 8582898
+Video injection usecase confirmed by the customer.
+Added padding and checked still did not work
+Steps to reproduce the issue
+Login in the app using D69438-71167/Password@123
+Use routes AutoRouteAJ7JA
+follow the steps in the video
+Please select your following role
+Customer Engineer (edited) ",,,
+"@device-features-ops
+Context: Had a sync with @harshit.s regarding the modifications that can be done for Pager alerts owned by devicefeatures team -> specifically those which do JSON_EXTRACT_SCALAR computations. The intent was to move them to in-memory based processing. As discussed, I have created the PR for the same https://github.com/browserstack/zombies/pull/6706
+Pls review and approve
+:fastparrot:
+3",,,
+"From: @Sushanth Poojary
+@device-features-ops
+Which feature is issue related to?
+Image injection
+For which OS?
+Android
+Product?
+AppLive
+What is the issue?
+Getting black screen after capturing the image
+Please describe the issue (in detail)
+cc: @live-support-team
+Expected Behaviour
+Should see the injected image
+Actual Behaviour
+Seeing a black screen after capturing and uploading the image
+Share debugging done (in detail)
+Followed the debugging doc, below are the details:
+Step1: Sign the app locally and check if the expected use case is working on local device.
+Didnt try this since the app is not crashing
+Tried testing the original app on a physical device and it is working as expected.
+Step2: Check with customer if app has any anti tampering mechanism
+NA: the app isnt crashing
+Step3: Check what API’s app is using too see if those APIs are even supported on BrowserStack
+As per the customer the app is using CameraX API
+However, we are unable to see any supported APIs in the logs
+Attaching the device logs of both Group 2 and non-Group 2 sessions
+Step4: Check if app is using Preview Layer
+Tried enabling 'Camera Preview' on a non-group 2 account, the issue persists
+Step5: Check if app has any use of Video Injection
+Tried with a sample video as well, didnt work
+Step6: Check for Padding
+Does not seem to be related to padding as we are getting a black image with any image
+Tried using different images of different sizes
+Steps to reproduce the issue
+Hashed ID: 3ed23efe0f01433bc0a7b076fc6ffaaa06c56809
+Company = ReferenceA
+Email = pdg.test4@hrsid.com
+Password = Browserstack1!
+Open the app - you should see the login form.
+Enter Company name in the top field - Enter 'Staging1' here
+Enter email address & password and tap the 'Sign In' button.
+Email Address = pdg.test11@hrsid.com
+Password = Browserstack1!
+After successfully signing in and you have waited for the app to complete it's sync. You should arrive at the home screen showing our different modules, here tap the 'Briefings' module (you may have to scroll down to see this).
+Tap 'Sites/Projects' and select any site from the list on the following page.
+Tap 'Course' and select any available course for the site you selected.
+Tap 'Module' and select any available module.
+Once here, select the 'Attachments' option, and then click the 'Add' button top right.
+Now select the 'Photo' option from the popup menu. This should prompt the devices camera to show and this is the point at which we should be able to do media injection.
+You can then use the image capture button to take an image.
+You can now see the uploaded photo attachment, if you click the bin icon it will show a preview of the image captured.
+You will see a black image preview on BS devices
+Please select your following role
+Support Engineer",,,
+"@device-features-ops
+For Android, are there situations where we allow phone calls in App Automate? A customer is not able to make a call on a Samsung device, but is on another device. (cc:@Lee Vardaro)",,,
+"@device-features-ops
+Just a quick query: when uploading contacts using uploadMedia, are the contacts loaded onto the device before the app is installed or before app is launched?",,,
+"@device-features-ops
+There is a bug in the App Live Dashboard where toggling iOS settings features such as Dark Mode, Low Power Mode, or Assistive Touch triggers an automation on the device. During this automation, some options on the dock become disabled. However, once the automation completes and the device becomes interactive again, the previously disabled options are not getting re-enabled as expected. PFA screenshot.
+Steps to reproduce:
+Start any App Live session on public or private
+Toggle Low Power Mode/Assistive touch feature",,,
+"From: @Vikrant Dekate
+@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+iOS
+Product?
+AppAutomate
+What is the issue?
+Customer facing the BROWSERSTACK_UPDATE_IOS_SETTINGS_EXECUTOR_ERROR
+Please describe the issue (in detail)
+Cx is seeing the BROWSERSTACK_UPDATE_IOS_SETTINGS_EXECUTOR_ERROR intermittently for a few of their sessions.
+Also, to mention, they are using the correct executor as mentioned in the following documentation:
+https://www.browserstack.com/docs/app-automate/appium/advanced-features/date-time?fw-lang=python#java
+Further, check that the prerequisites for using the executor are also fulfilled.
+iOS version greater than 15
+Appium Version (1.21.0)
+Affected Sessions:
+d052db22514f56c9abcc184da4a574a068c03e57
+8d7568cb6269b6a68c1dae59bd44509c9e4cd5a0
+702fa72dafd724ba577efa22228d86b4b5b10558
+652acbabf52d1af1a4d5bd4136563b3294d4dac0
+c91214e6773213e91a52dec09958bad24b7cde29
+b2b096dfb8b938d5f0df4b2393006203ce91e199
+Executor used:
+JavascriptExecutor jse = (JavascriptExecutor)iosDriver;
+
+jse.executeScript(""browserstack_executor: {\""action\"":\""updateIosDeviceSettings\"",\""arguments\"": {\""12HourTime\"" : \""On\""}}"");
+Expected Behaviour
+The Format should change to 12 Hour
+Actual Behaviour
+Throwing BROWSERSTACK_UPDATE_IOS_SETTINGS_EXECUTOR_ERROR
+Share debugging done (in detail)
+I wanted to try replicating this using a sample App, but did not proceed with the same, considering the issue is intermittent.
+Issue occurred on the following UDIDs:
+00008110-0016005E3644801E
+00008110-001221EE3E61401E
+00008110-00146DA402B8401E
+00008110-001C50C60A52401E
+00008110-00141D3202E0401E
+00008110-000A44D6342A801E
+All are unique.
+Steps to reproduce the issue
+Launch an Application and use the Executor to Change device time format.
+Please select your following role
+Support Engineer (edited) ",,,
+"From: @Yashwant Gaddam
+@device-features-ops
+Which feature is issue related to?
+Image injection
+For which OS?
+Android
+Product?
+AppLive
+What is the issue?
+Image Injection not working
+Please describe the issue (in detail)
+App Hashed ID: a8689779c82bc41597e30b36213414c7b236684a
+App consent: Yes
+Username: testusertrinity+fortnite@gmail.com
+Password: QAtesting1234!
+Tried padding, however, still facing the issue.
+Tried on a physical device, working fine.
+As per the documentation, it is mentioned that:
+If you see this log line while checking for Image Injection Intent flow, then raise request on #help-device-features and tag @df-product to enable Chooser Intent support for your app, and then test the app with that feature.
+We were able to locate the following while replicating:
+MockActivity:captureIntent: Identified this intent as IMAGE_CAPTURE
+MockActivity:captureIntent: Identified this intent as android.intent.action.CHOOSER
+Attached the log file as well.
+Expected Behaviour
+Image injection should work fine.
+Actual Behaviour
+Camera app is opening but image is not getting injected.
+Share debugging done (in detail)
+As per the doc:
+https://browserstack.atlassian.net/wiki/spaces/ENG/pages/4249747457/Image+Injection+-+Android
+Look for any of the following log lines to check if app is using Camera Intent APIs
+MockActivity:captureIntent: Identified this intent as IMAGE_CAPTURE
+MockActivity:captureIntent: Identified this intent as android.intent.action.CHOOSER
+If you see this log line while checking for Image Injection Intent flow, then raise request on #help-device-features and tag @df-product to enable Chooser Intent support for your app, and then test the app with that feature.
+Steps to reproduce the issue
+Username: testusertrinity+fortnite@gmail.com
+Password: QAtesting1234!
+After login >>
+Select any one account >>
+Scroll down and select ""Floor a Unit"".
+This will take you to a new page. There will be a green barcode/QR code button (looks like the picture attached), this will prompt for camera access and then this is where we want the auto scan to work.
+Attached the barcode, logs and padded images.
+Please select your following role
+Support Engineer",,,
+"Hi Team,  I have a user at WF that is having an issue with image capturing in their tests.  Image Injection works fine but they way their app works it does an Auto capture feature, and they are not able to turn off auto capture.
+We could solve their issue by injecting an image, then deleting it, so that auto capture does not work, then they can inject a new image and manually capture.
+Is there a way using an executor to delete the current injected image?  please let me know.",,,
+"Hi @mobile-platform-squad-ops
+FD - https://browserstackhelp.freshdesk.com/a/tickets/1423237
+User statement; NFC is off on the test device. We've just added a modal to check whether NFC is on, now a bunch of unrelated tests are failing because it never is. Is there any way, through device capabilities or setup config, to run tests on a device with NFC on?
+Please enable NFC for the GID: 4792487.
+User has private cloud devices.",,,
+Hi @device-features-ops For SIM enabled devices a cx has mentioned that the devices doesn`t have SMS balance due to which they are unable to perform UPI resgistration flow. Can we recharge those so that they can test their use case ?,,,
+Hi @device-features-ops There has been a recent surge in devices offlines with reason Sim cleanup Failed  current number ~ 29 on Ios devices. Reason here is UI test testEnableCallForwarding  is failing since the toggle button doesn't appear in set time. Can we check this once.,,,
+"From: @Sushanth Poojary
+@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+Android
+Product?
+AppLive
+What is the issue?
+Issue with Screenshot block
+Please describe the issue (in detail)
+Hashed ID: 30bd2f7e3220dd94b1908632fa21c1f6f370c400
+The app is Spotify
+It has screenshot block
+The user is enabling 'Remove Screenshot Block' feature however, they are still seeing a black screen
+On Group 2 account, the app itself is not getting installed with 'Remove Screenshot Block' with an install error
+Asked the customer to remove the restrictions from their app itself, however, the customer is adamant and wants us to check this
+Expected Behaviour
+App should work
+Actual Behaviour
+Black screen
+Share debugging done (in detail)
+Tried on Group 2 and non-group 2
+Group 2: App doesnt install - https://prnt.sc/zPFpuqERM_EG
+non-Group 2: Black screen
+Steps to reproduce the issue
+Enable 'Remove Screenshot Block'
+launch the app
+Please select your following role
+Support Engineer",,,
+"Hi @device-features-ops
+Group ID: 4256538
+Account - NN
+The above customer has requested a feature on our iOS devices — they would like the ability to set both past dates and future dates beyond 7 days.
+Currently, our platform restricts users to setting future dates up to only 7 days.
+This feature is highly critical for customer’s automation purposes. 70% of their validation tests need this feature. Could you please confirm if we can work on it as a Feature Request?
+cc @Sai Srujan Bachu @Rushabh Shroff @Akshay Mishra
+Ticket: 1414431
+Jira : AL-11459 (edited) ",,,
+"@device-features-ops Moving this UT failure ticket to DF, as the specs related to apple pay are failing.
+https://browserstack.atlassian.net/browse/AAP-16426",,,
+"@device-features-ops Please review these bonjour related changes in dylib - https://github.com/browserstack/ios_app_patcher/pull/122
+",,,
+"From: @Yashwant Gaddam
+@device-features-ops
+Which feature is issue related to?
+Apple Pay
+For which OS?
+iOS
+Product?
+Live
+What is the issue?
+Apple Pay option is missing
+Please describe the issue (in detail)
+The Apple Pay option is missing in the Assistive popup. Was able to replicate this, seems to be an issue on one particular device.
+Device ID: 00008110-0012659C3E91401E
+User's session ID: 34e00b38e92ce9dc4585c5b90aaa4b1e86388b1f
+Able to replicate on the above device, using any card, issue is same.
+My session ID: 888ae90b68dd718ea9ae8f416537cc7cf5879eec
+Attached recording and screenshot.
+Expected Behaviour
+Apple Pay option should be visible on Assistive popup
+Actual Behaviour
+Apple Pay option missing on Assistive popup
+Share debugging done (in detail)
+Apple Pay option missing on Assistive popup on a specific device.
+Steps to reproduce the issue
+Launch the affected device >> Add Card, try payment with https://applepaydemo.apple.com/ and Apple pay option is missing in Assistive touch popup.
+Please select your following role
+Support Engineer",,,
+"Hey @Sai Srujan Bachu,
+I have a customer GID : 4809175, who wants to test scenarios in devices with sim cards installed.
+They have a requirement to test this with their own network which is Vodacom and they use this in Mozambique. The sim card works with international roaming in India.
+They are ready to ship the vodacom simcard to India from where their network works if international roaming is activated. Wanted to understand if this scenario is feasible before we proceed with further discussions
+@robert.w",,,
+"Hey @device-features-ops One of my customer has the following use case:
+---
+Need for China SIM card for doing WeChat christies mini app testing.
+Do we support such and if not can the customer send their SIM cards and then we support such of public/private cloud
+cc: @Durgesh Naregalkar @Khushi Bhatia",,,
+"@device-features-ops
+We're facing an issue with Apple Pay + local
+After adding a card (Visa, Amex, etc.) to the wallet, local URLs like localhost:45454 or bs-local.com:45454 stop working. This only happens after adding a card — before that, local URLs work fine.
+I was able to reproduce the issue on iPhone 16, but the customer sees it on both iPhone 15 and 16.
+Session ID: 9af837bf656d2fc834c7c9c9e4cacecac9c44e86  -- hyperdrive-logs
+Steps to reproduce:
+Start local binary: ./BrowserStackLocal --key <key> --verbose 4
+Launch an App-Live/Live session using an iPhone with Apple Pay.
+Add any card to the wallet.
+Try accessing a local URL — it won’t load & also wont appear in the Privoxy
+Public URLs like google.com still open, but also don’t get logged in Privoxy.
+Do we make any changes to Privoxy when a user adds a card to the wallet?
+ Also, do we add any proxy after the card is added?
+cc: @Kamalpreet Kaur",,,
+"Hi @device-features-ops,
+Is there a plan to support Apple Pay with Screen Readers on iOS?
+cc @rohit.n @Sreenivas Karthikeyan @Aviral Mittal @neil.s",,,
+"Hi @device-features-ops
+One of our customers would like to use their own card to test Apple Pay within their application. Could you please confirm if this is possible, or is it limited to the built-in/demo cards only?
+Thanks in advance!",,,
+"Hi @device-features-ops
+We(App-Live) is working on doing local setup e2e under productivity OKR. We want to know how to do local setup for the app-patcher?",,,
+"Hello @device-features-ops https://browserstack.enterprise.slack.com/archives/CRUHK8456/p1752592172955519
+",,,
+"Please review
+https://github.com/browserstack/appPatcher/pull/217
+AppLive Interaction Sync Performance and WebView fixes
+",,,
+"Hello @df-product
+User ID: 6520924
+Group ID: 4102552
+Can we please enable iOS App Patching for the above customer?
+They want to use 'iOS Entitlements' and 'Biometric Authentication' feature together
+cc: @live-support-team
+Ticket: 1418764",,,
+"Hi @device-features-ops
+based on this thread : https://browserstack.slack.com/archives/C01TT7AF2PL/p1733120531158529?thread_ts=1732448372.151129&cid=C01TT7AF2PL
+Multiple videos are not supported, as per the public doc for video injection in automate
+is it there in the roadmap ?",,,
+"@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+iOS
+Product?
+AppLive
+What is the issue?
+Offline Mode Not Working as Expected for iOS
+Please describe the issue (in detail)
+The customer has reported that offline mode is not functioning correctly on iOS devices. Despite enabling offline mode, the app is still able to fetch data from their servers, and websites are still accessible through the device’s browser. They have shared session recordings.
+Expected Behaviour
+The device should be offline and the app should not be able to fetch data from their servers.
+Actual Behaviour
+The device is not offline and the app is able to fetch data from their servers.
+Share debugging done (in detail)
+Tried it on my demo account but I'm unable to reproduce it, but the customer is able to reproduce it.
+Steps to reproduce the issue
+Steps shared by the customer:
+Load the app on the device.
+Download app content on the device.
+Turn on offline mode.
+After few seconds, the device get's connected to the internet and it is able to access the app content available on their servers.
+They are also able to access internet on the device's browser.
+Please select your following role
+Customer Engineer",,,
+"This App-Live customer has the requirement of 3 finger tap, we are looking to unblock the user by providing some workarounds.
+we tried to perform the 3 finger touch by enabling assistive touch gestures , but the functionality is not working somehow. can you please help with the settings.",,,
+"There has been an issue with Apple Pay Mastercard. The card is not getting activated after being Added.
+It's an issue from Apple side. All Mastercard cards are showing the same issue.
+cc: @harshit.s @Sai Srujan Bachu (edited) ",,,
+"From
+@Rishu Goyal
+@Aditya Singh @Sai Srujan Bachu
+Read Channel Overview: Yes
+Query Category: Other
+Product: AA
+OS: Android
+Customer Info: qa@buildium.com, GID: 3153638
+Query:
+FD: https://browserstackhelp.freshdesk.com/a/tickets/1412942
+Customer query:
+The customer mentioned that their login flow doesn't function correctly in the scenarios where the biometrics capability has been enabled. This is because the capability resigns the APK. The signing signature of the APK is part of what allows their authentication code-based login flow to complete in their native app (after starting in a web view).
+Questions?
+➤ Will App Patching help in this case?
+https://www.browserstack.com/docs/app-live/advanced-features/android-app-patching
+➤ And if yes, is it available for App Automate as well?
+➤ Do we publish the SHA256 fingerprint of the certificate used to resign the app when the biometrics capability is enabled? If yes, would it be possible to know that? (edited) ",,,
+"From: @Afdhal Qadir
+@device-features-ops
+Which feature is issue related to?
+Apple Pay
+For which OS?
+iOS
+Product?
+AppLive
+What is the issue?
+Request for Apple Pay Sandbox Merchant ID Support on BrowserStack
+Please describe the issue (in detail)
+When provided apple pay, customer asks for Merchant ID
+Expected Behaviour
+Merchant Id for apple pay
+Actual Behaviour
+No merchant ID for apple pay
+Share debugging done (in detail)
+Told the customer that we use apple sandbox environment for the cards
+Steps to reproduce the issue
+https://developer.apple.com/apple-pay/sandbox-testing/
+Please select your following role
+Support Engineer",,,
+"Hi @device-features-ops , wanted to know if Frida related patching works with Android 15 and greater?",,,
+"Hi Team, We have a customer (GID 2617601) who should have access to Apple Pay. But for some reason they still see it as greyed out. @mark mentioned the feature flag was turned on but for some reason the customer can't access it. The user ionut.iacob@theaccessgroup.com has the right seats assigned so we're trying to figure out where the issue is. CC @tejendra",,,
+"From: @Simran Chawla
+@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+Android
+Product?
+AppLive, AppAutomate
+What is the issue?
+GSF ID Not Displayed on App Automate Devices Except Pixel 8 Pro (OS 14) – Customer Blocked on Testing
+Please describe the issue (in detail)
+During testing on BrowserStack, cx noticed that the GSF ID is only visible on Pixel 8 Pro (OS 14). It is not retrievable on other devices running OS versions 13, 15, or 16 beta, even though it works perfectly on physical devices with the same OS versions.
+Group ID: 5169220
+Previous Thread : https://browserstack.atlassian.net/browse/MOBCR-4393
+Expected Behaviour
+Please refer : https://browserstack.atlassian.net/browse/MOBCR-4393
+Actual Behaviour
+N/A
+Share debugging done (in detail)
+N/A
+Steps to reproduce the issue
+n/a
+Please select your following role
+Customer Engineer",,,
+"From: @Vinayak Mirani
+@device-features-ops
+Which feature is issue related to?
+Apple Pay
+For which OS?
+iOS
+Product?
+Live
+What is the issue?
+Getting your card is getitng activated error
+Please describe the issue (in detail)
+When trying to pay, they get an error your card is being activated.
+This has happened with 2 australian cusotmer
+Expected Behaviour
+Card should be activated already
+Actual Behaviour
+When trying to pay, they get an error your card is being activated.
+Initally it was not working for mastercard now they are also getting error for visa
+Share debugging done (in detail)
+Session id : 43e70d9d5055b6f057c8b6e7d2a78402e75cd160
+It has been happening to all users of grp id 1916638
+also another customer reported same issue
+Note : both are from australia
+Steps to reproduce the issue
+On paying after adding the card, the issue is noticed
+Please select your following role
+Customer Engineer",,,
+"From: @Eric Wang
+@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+Android
+Product?
+AppLive, AppAutomate
+What is the issue?
+Performance testing for browser requires fps settings change.
+Please describe the issue (in detail)
+I found that many Samsung and Google devices have a default setting for adaptive screen refresh rate, but MotionMark requires testing to be run at 60fps, which is the root cause that makes Android test scores very unstable. However, BrowserStack prohibits modifying settings. Is there any way to force the relevant devices to run at 60fps?
+Expected Behaviour
+Option to modify this setting if possible
+Actual Behaviour
+Not able to modify setting
+Share debugging done (in detail)
+modify fps setting
+Steps to reproduce the issue
+modify fps setting
+Please select your following role
+Customer Engineer",,,
+"Hi @device-features-ops,
+One of my customers (Callsign) is facing a similar issue on Android, as described here:
+https://browserstack.slack.com/archives/C01TT7AF2PL/p1698056319861029
+I noticed that the issue was previously resolved by enabling the Biometric User Options feature, as mentioned by @Dev Tyagi in this thread:
+https://browserstack.slack.com/archives/C01TT7AF2PL/p1698056443219809?thread_ts=1698056319.861029&cid=C01TT7AF2PL
+Could you please enable this feature for my customer as well?Alternatively, if this can be done on our end, could you kindly guide us through the process?
+Gid : 5169220
+cc : @ankit.l @Harsh Pathar @Vignesh Balakrishnan",,,
+"From: @sahej
+@device-features-ops
+Which feature is issue related to?
+Video injection
+For which OS?
+Android
+Product?
+AppAutomate, AppLive
+What is the issue?
+Customer's app is detecting the camera view via Hardware and hence while doing the video injection they are getting an error as ""Phone Not Straight""
+Please describe the issue (in detail)
+Customer is having an application for submitting visa applications. Their camera is detecting liveliness, hence doing a video injection in the app. When we are trying to do the same, on the screen we are seeing ""Phone not straight"" warning coming. Customer confirmed they are detecting it via the hardware to check the device orientation because of which the flow is not moving ahead.
+Expected Behaviour
+The camera should detect the face and move ahead with the flow of capturing the face of the customer.
+Actual Behaviour
+While detecting the face with the video injection, we are getting phone not straight warning at the top.
+Share debugging done (in detail)
+I tried to sign the application locally and then ran it locally, but it was working only when I kept the phone exactly straight, even if i tried to tilt it a little, it was giving me phone not straight warning on the real device as well.
+There is no anti tampering mechanism present in the app.
+I checked the API which was getting called and we supported those API's as well
+I checked with and without preview layer as well. Getting the same warning.
+Customer is having some liveliness detection in their app, hence using video to upload.
+No padding issues as well.
+Steps to reproduce the issue
+Sharing the video recording in the thread below
+Please select your following role
+Customer Engineer",,,
+"Hi @device-features-ops Can you please help in the following query once.
+
+Santosh Singh
+@aa-ops
+Customer name: Hinge Health
+Customer is getting a black screen with their application, when we tried we were able to replicate the issue
+The customer has confirmed that their application does not include the FLAG_SECURE setting.
+Supported APIs across Android versions for Camera Injection Documentation:
+Android
+Android 6 and above	
+
+android.hardware.camera.PreviewCallback API for API level 1-20
+
+android.hardware.camera2.CameraManager, android.hardware.camera2.CameraDevice, android.hardware.camera2.CameraCharacteristics, android.hardware.camera2.CameraCaptureSession, android.hardware.camera2.CaptureRequest, android.media.ImageReader APIs for API level >=21
+
+Camera Intent API
+One possible hypothesis from my side is that the application might not be invoking the necessary camera APIs as outlined in the documentation. Could you confirm if the same set of APIs is required for video injection to work properly as well? This will help me verify with the customer whether these APIs are being called within their app.
+cc- @Deep Shah @Ansel Dsouza
+Show less",,,
+"@device-features-ops In regression we are seeing this failure where Call Logs are not getting cleared, Added two sessions for reference:
+session 1
+session 2",,,
+"Hi team, can someone help with this?
+
+
+
+Mayank Chaurasia
+@harshit.s I missed updating default.js frida file in appPatcher PR :disappointed:
+It was there in mobile-tools though - here (already in master)
+There is no prod impact as feature not enabled for anyone.
+Created an appPatcher PR to keep both repos in sync
+PR: https://github.com/browserstack/appPatcher/pull/215/files
+This has already been tested.
+Can you please help deploy this to prod? (edited) ",,,
+"@device-features-ops need help developing my understanding of product.
+When we perform any interactions on AL, tap/drag/sys interactions like home, how does that interaction gets converted to action on device?
+I am aware the requests get pushed inside pusher. But where does it go after that? Please advise.",,,
+"@device-features-ops
+https://browserstack.app.opsgenie.com/alert/detail/1793ac9d-ebbf-471d-8ec6-95700d6afd53-1752034905212/details
+Pls check - Getting alerts since yesterday",,,
+"From: @Lee Vardaro
+@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+Android
+Product?
+AppLive, AppAutomate
+What is the issue?
+certificate pinning issue
+Please describe the issue (in detail)
+They get a certificate pinning error in AA and AL except for AL when they have network logs enabled.  I do see a message saying that ""SSL checks have been successfully bypassed for the app""
+Expected Behaviour
+App should work in AL without network logs (mainly because this is default), and in AA with network logs (they use them for debugging)
+Actual Behaviour
+It only works in AL with debugging enabled
+Share debugging done (in detail)
+I was able to reproduce this
+Steps to reproduce the issue
+We have app access permission from the user.  I reproduced it by following the steps in this test: https://app-automate.browserstack.com/dashboard/v2/builds/d26d03cd49dd2973da0a94c7f0f5d7580[…]8f5a65c4453dfae88337a30ff9a64e1080b069b8723517b10ad6be
+When it's working, they should see blood pressure displayed like it is in the attached screenshot from AL with the network logs enabled.
+Please select your following role
+Customer Engineer",,,
+"Hi @device-features-ops,
+Is there something different about app patching for bio auth on Group 2 that would explain why an app is working there but crashing for the user and my demo account.
+If so, can you enable it for GID 4405774?",,,
+"Hello @device-features-ops @df-product
+User ID: 8463167
+Group ID: 4940945
+The above user is facing issues with video injection
+Attaching the recording of the behavior
+Upon checking the logs, we see the below lines
+07-04 07:11:34.044 D/BROWSERSTACK_FRAMEWORK(15181): MockActivity:captureIntent: called with intent: Intent { flg=0x24000000 cmp=com.myairtelapp.debug/com.myairtelapp.home.views.activities.NewHomeActivity (has extras) } requestCode: -1
+07-04 07:11:34.044 D/BROWSERSTACK_FRAMEWORK(15181): MockActivity:captureIntent: called with intent: Intent { flg=0x24000000 cmp=com.myairtelapp.debug/com.myairtelapp.home.views.activities.NewHomeActivity (has extras) } requestCode: -1
+And as per the debugging doc, in case of MockActivity:captureIntent we need to enable Chooser Intent support
+Can we please enable this for the above customer?
+Ticket: 1410805
+cc: @live-support-team",,,
+"From: @Afdhal Qadir
+@device-features-ops
+Which feature is issue related to?
+Audio injection
+For which OS?
+Android
+Product?
+AppLive
+What is the issue?
+Cannot replicate further as we do not have feature for audio injection
+Please describe the issue (in detail)
+User ID	9837587
+Group ID	3291164
+App hased ID : cc079d8d2e9acee403df41c46af25a8d651a6956
+These are the errors Client could gather from the device's logs:
+07-08 09:39:17.985 E/ExpoImage( 544): Failed to load resource
+07-08 09:39:17.985 E/ExpoImage( 544): There was 1 root cause:
+07-08 09:39:17.985 E/ExpoImage( 544): com.bumptech.glide.load.HttpException(, status code: 403)
+07-08 09:39:44.169 E/MPEG4Writer( 544): Stop() called but track is not started or stopped
+Steps to replicate:
+1. Install the build on a device that has audio injection enabled
+2. Log in to the application
+3. Access any available book
+4. Observe that there will be an infinite loading and the book cannot be accessed
+email: android1@linnify.com
+pw: 1234qwer
+Client has issue, the books from their application fail to load on the devices that have audio injection enabled
+However, for these steps we cannot replicate this as for our Group 2 we are not given feature of audio injection.
+Expected Behaviour
+It should show us the logo of Audio injection enable for the devices
+Actual Behaviour
+1.Choose the app
+2.Tried to select the device that has Logo of audio injection enabled
+Since feature is not available to use it does not show in our account
+Share debugging done (in detail)
+1.Choose the app
+2.Tried to select the device that has Logo of audio injection enabled
+Steps to reproduce the issue
+Steps to replicate:
+1. Install the build on a device that has audio injection enabled
+2. Log in to the application
+3. Access any available book
+4. Observe that there will be an infinite loading and the book cannot be accessed
+Please select your following role
+Support Engineer",,,
+"From
+@Afdhal Qadir
+@Aditya Singh @Sai Srujan Bachu
+Read Channel Overview: Yes
+Query Category: Other
+Product: AL
+OS: Android
+Customer Info: Group ID: 3291164
+Query:
+App hased ID : cc079d8d2e9acee403df41c46af25a8d651a6956
+These are the errors Client could gather from the device's logs:
+07-08 09:39:17.985 E/ExpoImage( 544): Failed to load resource
+07-08 09:39:17.985 E/ExpoImage( 544): There was 1 root cause:
+07-08 09:39:17.985 E/ExpoImage( 544): com.bumptech.glide.load.HttpException(, status code: 403)
+07-08 09:39:44.169 E/MPEG4Writer( 544): Stop() called but track is not started or stopped
+Steps to replicate:
+1. Install the build on a device that has audio injection enabled
+2. Log in to the application
+3. Access any available book
+4. Observe that there will be an infinite loading and the book cannot be accessed
+email: android1@linnify.com
+pw: 1234qwer
+Client has issue, the books from their application fail to load on the devices that have audio injection enabled
+However, for these steps we cannot replicate this as for our Group 2 we are not given feature of audio injection.
+",,,
+"From: @Nisma Shaikh
+@device-features-ops
+Which feature is issue related to?
+Apple Pay
+For which OS?
+iOS
+Product?
+Live
+What is the issue?
+Card Network failure
+Please describe the issue (in detail)
+Hi Team,
+We have a customer reporting an issue with Apple Pay on BrowserStack
+The Visa and Mastercard options are most of the time unavailable , Referring to previous thread I informed them that the availability issue is a payment gateway provider issue.
+However , When customer is using a Visa card from his website it goes through without any issue. Now customer wants to know if that is a different Testing provider? ( How is visa working through his website but on BrowserStack the card network shows unavailable).
+They are planning to purchase BrowserStack licenses , however the problem is with the card network that they want us to address.
+Attaching a short clip of the issue.
+video
+Expected Behaviour
+The Visa and Mastercard should work as expected
+Actual Behaviour
+Failed
+Share debugging done (in detail)
+Session id- 	42543f294ece89eb79b9e07659400b13e143b571
+Steps to reproduce the issue
+N/A
+Please select your following role
+Support Engineer (edited) ",,,
+"Hi @device-features-ops: Can I get a list where I can see which of my set of customers have some or the other pro feature for core products grandfathered without having to pay for it?
+cc: @Joseph Covino",,,
+"Hi @device-features-ops
+A customer(Pexa, GID- 3607733) has the following query:
+“The Pixel 9 series, including the Pixel 9, 9 Pro, and 9 Pro XL, are expected to support a 16KB memory page size setting, which can be enabled through a developer option. This feature allows for improved memory management and potential performance gains, particularly for apps and games.
+Developer Option: A developer option is available on Pixel 8 and 9 devices to boot in 16KB mode for testing purposes.”
+As far as I know, we don't support access to Developer Options on our devices. Could you please help confirm this?
+ Also, if there’s any possible workaround or alternative approach we can suggest to the customer, that would be great. (edited) ",,,
+"Hi @device-features-ops, a customer is trying to launch dialer but it closes for Android. Can we enable the dialer app for them on AL and AA?
+GID: 4606731",,,
+"@device-features-ops
+Can someone help deploy these PRs
+
+
+
+Mayank Chaurasia
+@device-features-ops
+Please deploy these PRs to prod :
+https://github.com/browserstack/appPatcher/pull/209/files
+https://github.com/browserstack/mobile-tools/pull/590/files
+Approvals taken :white_check_mark:
+Nightly regression passed with GTG",,,
+"From: @Laxmi Channabasappa
+@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+iOS
+Product?
+AppLive
+What is the issue?
+Unable to turn on Device Passcode  on iOS devices
+Please describe the issue (in detail)
+A user has reported an issue wheere they are unable to enable device passcode on App Live. We are able to replicate the issue on our end with any app
+Expected Behaviour
+Device passcode should be enabled
+Actual Behaviour
+Receiving an error while doing so
+Share debugging done (in detail)
+Tried on our end we were able to replicate it
+Steps to reproduce the issue
+Launch any app
+Enable device passcode feature from floating tool bar
+Please select your following role
+Support Engineer",,,
+"From: @Ashwani Pathak
+@device-features-ops
+Which feature is issue related to?
+Contacts app
+For which OS?
+iOS
+Product?
+AppAutomate
+What is the issue?
+Intermittently on iOS Messages App is moving to background automatically for the user
+Please describe the issue (in detail)
+FD Ticket: https://browserstackhelp.freshdesk.com/a/tickets/1410334
+GID: 5169220 (callsign)
+Issue sessions:
+1e097ff325c438bd469a1feed9ac7763049766f1
+01307a43d5a11c9d5e851b04e643c415b4c9f7ab
+182570ae088fadd746b1eddbb57483a4545e210e
+7ac298e5e83cb7d7839e8f6c5149024e500f610f
+3e5dea597d7eec38fa094c7d3536e8f7259d95dd
+Example successful test sessions:
+17dac1159e9f5b185577ba0fa1c0fa28105c89bb
+dbd9589ecb5d004625655247082ad3e1c4944f39
+Expected Behaviour
+Messages app on iOS should remain open consistently.
+Actual Behaviour
+Messages app on iOS is going in background intermittently in about 70% of tests.
+Share debugging done (in detail)
+More information:
+User is observing this issue intermittently.
+We tried replicating this issue with the exact same capabilities but didn't observe this issue in Group 2 BStack account. We tried about 40+ sessions)
+When we tried running the Messages app from a free trial account then we observed the Messages app was going in background (as it is required to be enabled by us)
+User mentioned they observed this issue in about 70% of their sessions since last week. Previously they were observing it for about 20% of their sessions.
+In latest sessions user tried multiple activateApp command to re-open the Messages app - didn't work.
+Steps to reproduce the issue
+Launch a sample app on iOS and then in between session - launch SMS App using mobile: activateApp or driver.activateApp(""com.apple.MobileSMS"") command
+Please select your following role
+Support Engineer",,,
+"From: @Rishu Goyal
+@device-features-ops
+Which feature is issue related to?
+Biometric authentication
+For which OS?
+iOS
+Product?
+AppLive, AppAutomate
+What is the issue?
+Biometric pop up shown once but not again
+Please describe the issue (in detail)
+The app does a login and enables the Face ID (where the pop-up works). The user can then just kill the app, and when the app is started again, the Face ID should be matched, but the pop-up for biometric does not open on iOS device.
+Session ID: bf5a06b04752b20d1c29bd47cfbf7fadbeb1f38f
+Tried to replicate it on App Live as well, same result.
+Expected Behaviour
+It is expected that whenever the app starts after killing it, it should ask for biometric FaceID.
+Actual Behaviour
+Attached the video for the workflow on iOS.
+Share debugging done (in detail)
+Case 1: Not applicable as the app is working fine
+Case 2: Not applicable as the app is working fine throughout the session without reporting any crashes in between
+Step 1: The app and biometric functionality work in a real handheld device.
+Step 2: If there were any anti-tampering measures the functionality wouldn't have worked even once.
+Step 3: The customer doesn't know the API being used. I checked Notice options and found this-
+Jul 3 08:53:21 Inbank(Foundation)[2748] <Notice>: [BrowserStack][Biometric]mocking canEvaluatePolicy
+Jul 3 08:53:21 Inbank(Foundation)[2748] <Notice>: [BrowserStack][Biometric]mocking canEvaluatePolicy
+Jul 3 08:53:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][SecItemCopyMatching]SecItemCopyMatching hooked!
+Jul 3 08:53:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][SecItemCopyMatching]Attributes: {
+Jul 3 08:53:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][SecItemCopyMatching]OSStatus representing failure -25300
+Jul 3 08:53:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][SecItemAdd]SecItemAdd hooked!
+Jul 3 08:53:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][SecItemAdd]Attributes: {
+Jul 3 08:53:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][SecItemAdd]OSStatus representing success 0
+Jul 3 08:53:40 Inbank(Foundation)[2748] <Notice>: [BrowserStack][Biometric]mocking evaluatePolicy
+Jul 3 08:53:40 Inbank(Foundation)[2748] <Notice>: [BrowserStack][Biometric]biometric user option false
+Jul 3 08:53:40 Inbank(Foundation)[2748] <Notice>: [BrowserStack][Biometric]Biometric popup presented.
+NOTE: These only appear on first time, not after killing and restarting the app.
+Step 4:
+Jul 3 08:53:40 Inbank(Foundation)[2748] <Notice>: [BrowserStack][Biometric]Biometric popup presented.
+Not checked with Biometrics User Option
+Step 5: Found this
+Jul  3 08:55:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][checkAccessControlFlags]kSecAccessControlBiometryCurrentSet flag found!
+Jul  3 08:55:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][checkAccessControlFlags]kSecAccessControlBiometryCurrentSet flag found!
+Jul  3 08:55:21 Inbank(BrowserStackInjector)[2748] <Notice>: [BrowserStack][KeyChain][checkAccessControlFlags]kSecAccessControlBiometryCurrentSet flag found!
+Steps to reproduce the issue
+Steps to reproduce the issue
+Username: 00000004
+Password: Abcd1234
+OTP: 123456
+Please select your following role
+Support Engineer",,,
+"Hi @Sai Srujan Bachu, cx wants dialer app access on App Live, can we enable this for them on App Live?
+GID: 3793861
+cc: @device-features-ops @df-product @Shrikrishna Umbare (edited) ",,,
+"From
+@Rishu Goyal
+@Aditya Singh @Sai Srujan Bachu
+Query Category: Other
+Product: AA
+OS: iOS
+Customer Info: GID: 8598722
+Query:
+Title: Biometric Prompt Not Triggered on App Relaunch in Same Session – App Automate
+Details:
+The customer has implemented biometric login in their app. Here’s the flow:
+User logs in and enables biometrics from app settings.
+ 2.  User closes (terminates) the app.
+ 3.  User relaunches the app within the same App Automate session.
+Issue:
+On relaunch, the biometric prompt does not appear — the app bypasses it and logs the user in directly.
+The customer expects the biometric prompt to be shown again, similar to behaviour seen on a real physical device.
+Customer Session:
+bf5a06b04752b20d1c29bd47cfbf7fadbeb1f38f
+Observed Behaviour:
+Able to replicate the same behaviour on App Live.
+On real devices, the biometric prompt is triggered again on relaunch.
+Is this expected behaviour on App Automate? Does biometric state persist in the session even after app termination?",,,
+"Hi @device-features-ops, wanted to know if there is any documentation on appPatcher staging environment, wanted to build the browserstack.dex .
+Had a few questions:
+If there is any documentation on appPatcher staging environment?
+how can I add my ssh key?
+is there any job for deploy?
+https://minion.browserstack.com/job/AppPatcher/ I don't see any jobs here, could it be that there is some access issue?",,,
+"From: @Ashwani Pathak
+@device-features-ops
+Which feature is issue related to?
+SIM
+For which OS?
+iOS
+Product?
+AppAutomate
+What is the issue?
+SMS containing OTP is not being received on +91 9321985473 SIM number
+Please describe the issue (in detail)
+FD Ticket: https://browserstackhelp.freshdesk.com/a/tickets/1409230
+GID: 5169220 (callsign)
+Issue:
+While running their App Automate tests with eSIM, user is unable to receive SMS containing OTP intermittently and it is causing flakiness in their tests.
+Issue session: 1c1985da3b29c93115c718445bfbd9a65463479d
+Example successful session: 7e72d787d7e8b18b1ea534806338cf1ad9d46d30
+Expected Behaviour
+SMS OTP should we received consistently in every test run.
+Actual Behaviour
+SMS OTP is intermittently not received, causing flakiness in tests.
+Share debugging done (in detail)
+More information:
+User shared only 1 session where +91 9321985473 number is in use. However, they have mentioned it is happening intermittently across all India region SIM.
+We tried replicating the issue where we used freecharge.in to send login/register SMS OTP on +91 9321985473  and it was not received. Then we tried another number in a different session and SMS OTP was received successfully. (Attache screenshot)
+Steps to reproduce the issue
+We tried replicating the issue where we used freecharge.in to send login/register SMS OTP on +91 9321985473  and it was not received. Then we tried another number in a different session and SMS OTP was received successfully. (Attache screenshot)
+Please select your following role
+Support Engineer",,,
+"hello @device-features-ops I am using offline patching endpoint on k8s env , i have enabled from admin page as well below error coming when patching endpoint .
+{“error”:“Error while pacthing the app.“}",,,
+"From
+@prasoon
+@Aditya Singh @Sai Srujan Bachu
+Query Category: Other
+Product: L, AL, AUT, AA
+OS: NA
+Customer Info: Affinity Water GID: 9661619
+Query:
+Customer wants EU GRR and has bought Enterprise Lite for L, AL, A, AA. Now they are asking 2 questions
+Can you please explain why biometrics don’t work when GRR is implemented?
+Can you please supply “the list of non supported devices and updated tiers.” as referred to in the document (section 3 of the FAQ)",,,
+"From: @Thomas Schoemaecker
+@device-features-ops
+Which feature is issue related to?
+Apple Pay
+For which OS?
+iOS
+Product?
+Live
+What is the issue?
+Customer is unable to add a Visa Credit Card
+Please describe the issue (in detail)
+When adding the Visa Card, the process goes through a loop and doesn't end. We also notice that a random name is displayed in the card details name.
+Expected Behaviour
+Card addition should proceed
+Actual Behaviour
+Unexpected name shows up. Car addition does not succeed.
+Share debugging done (in detail)
+Went on a call / recorded session / made sure ApplePay was enabled on the account
+Steps to reproduce the issue
+Not sure it's reproducible yet. Asked customer to retry
+Please select your following role
+Customer Engineer",,,
+"From: @Vikrant Dekate
+@device-features-ops
+Which feature is issue related to?
+Image injection
+For which OS?
+iOS
+Product?
+AppAutomate
+What is the issue?
+QR not getting scanned on iPhone
+Please describe the issue (in detail)
+The customer was previously using an iPad for their test runs for their e-commerce app involving image injection, and everything was working as expected. However, they have now shifted entirely to iPhone for testing and are facing issues specifically with image injection.
+They scan a total of three images during the run. The primary image, which is used for logging into the application, is working fine. However, the subsequent images are failing to inject as expected.
+Cx also tried padding the image, but it did not help.
+Session ID:
+52be911b9d18ed6d7b178e0c235032989aad97c1
+e87679ce92e95ca661741d7868c14c1c654bc12c
+1c5bf5dd6400a372c9df178bc859ecf23a6c59aa
+Expected Behaviour
+After adding products to the Cart, we need to choose Cash payment upon which we need the injected QR image to get scanned to move to the next screen.
+Actual Behaviour
+The Image is not getting scanned at all.
+Session ID:
+bcde71eef164c8f54d17b5522a70eadc43166455
+Share debugging done (in detail)
+I tried replicating the same flow on my end and saw the issue occurring.
+I also tried padding the image using the screenshot approach described in the internal documentation, but the image did not get detected.
+Steps to reproduce the issue
+Steps to reproduce:
+Activate app once installation is finished
+login to PS
+Username: 7
+Password: 007
+add any online item in cart by selecting Webstore
+Select Cart options and select Cash from the list
+Select BS Test as Store Associate
+Enter cshewale@suitsupply.com as Email and select the one displayed result, select Business and then select Open Drawer, a window to scan QR will be displayed.
+This is where the QR does not get detected on iPhone.
+Please select your following role
+Support Engineer",,,
+"From
+@shuaib
+@Aditya Singh @Sai Srujan Bachu
+Query Category: New Device*OS combination Request
+Product: AA
+OS: Android
+Customer Info: Customer wants Android 16 access on App Automate
+Query:
+Customer wants Android 16 access on App Automate
+Customer Group ID: 3341403
+Not sure whether this is the right channel for this request. If not, please redirect me to the correct channel.",,,
+"Hi @device-features-ops
+Please review the following PRs for ""AppLive Interaction Sync Internal release""
+mobile-tools : https://github.com/browserstack/mobile-tools/pull/591
+Have added all the Interaction sync logic behind a flag
+appPatcher : https://github.com/browserstack/appPatcher/pull/210
+Targeting to send this to regression on Wednesday (2nd July).
+cc: @Tirth Shah",,,
+"@device-features-ops
+Please review PRs for supporting ""Shake Gesture in Android""
+mobile-tools: https://github.com/browserstack/mobile-tools/pull/590/files
+appPatcher: https://github.com/browserstack/appPatcher/pull/209/files
+Have built dexter.jar and browserstack.dex from staging appPatcher machine - have dev-tested the shake gesture patching flow end to end in staging with an AL session- working fine :white_check_mark:
+Other related WIP PRs just as FYI
+https://github.com/browserstack/railsApp/pull/137343/files
+https://github.com/browserstack/mobile/pull/11605
+Targeting sending this to regression on Wednesday (2 July)
+Also, just a heads up, @Tirth Shah also has a PR for adding interaction-sync patching in Frida.
+We're planning on merging our changes together tomorrow and send a common PR to regression. Let us know if any concerns. (edited",,,
+"Hi @device-features-ops
+App patching is failing in staging and it is impacting regression runs. can you please check this issue on priority?
+cc @Anuj Joshi @Phagun Bakshi",,,
+"From
+@sahej
+@device-features-ops
+Product: AL, AA
+OS: Android
+Feature: Image Injection
+Query:
+One of my customer is using the image injection feature in app autoamte, but facing some issues. We tried to perform the flow in app live, but in app live with video injection i am able to perform the flow, but with image injection it is not working because the image resolution is getting changed. Customer said it should be 1:1 ratio. I am attaching the video recording of both the scenarios in the thread.
+I wanted to ask like are we doing the distortion of the image and because of that it is not working?",,,
+"From
+@Varad Prabhu
+@device-features-ops
+Product: AA
+OS: NA
+Feature: Others
+Query:
+I have a customer (Group: 9468725) who is on the Enterprise App Automate Device Cloud Pro plan - Extended Trial
+Until yesterday, the geolocation feature was working fine for them. However, starting today, they’ve begun receiving the following error:
+'browserstack.geoLocation' (IP Geolocation feature) capability is not supported in your account. It is only available under Enterprise plans, refer https://www.browserstack.com/ip-geolocation for more details.",,,
+"Hi team @device-features-ops
+AppLive is working on supporting shake gesture in Android
+We have added patching support in both mockFramework and Frida.
+PRs:
+https://github.com/browserstack/mobile-tools/pull/590/files - tested locally :white_check_mark:
+https://github.com/browserstack/appPatcher/pull/209/files - to be tested
+https://github.com/browserstack/railsApp/pull/137343/files - WIP
+I need to dev-test the whole flow end to end flow in staging and wanted some help below items
+How to build browserstack mock framework and what changes have to be done in PR?
+Do we need to bump bstack framework version also?
+For Frida - are there any specific changes required, apart from updating the frida script?
+How to deploy on staging appPatcher once PRs are ready
+What's the process to send PRs in regression
+What's the deployment process",,,
+"This was raised 2 weeks back, any specific reason for the delay? cc @Dhvani Parekh",,,
+"Raise Query - DF
+WORKFLOW  4:25 PM
+From
+@Venkatesh Raghunathan
+@device-features-ops
+Product: AL
+OS: Android, iOS
+Feature: Image Injection
+Query:
+Can you please enable Frida for GID - 5603738.
+Product: App Live",,,
+"Hello @device-features-ops @Sai Srujan Bachu
+User ID: 7400376
+Group ID: 6870219
+The above customer's application is crashing with Biometric flow on non-frida accounts
+Works fine on Group 2
+Could you please enable Frida for the above customer?
+There are 470 users in the group, will this cause any issues?
+cc: @live-support-team
+Ticket: 1403009",,,
+"From
+@Simran Chawla
+@device-features-ops
+Product: AA, AL
+OS: Android, iOS
+Feature: Google Pay
+Query:
+A customer has reached out with a query regarding Google Pay testing on BrowserStack. Their integration is configured to support only CRYPTOGRAM_3DS, and they explicitly exclude PAN_ONLY due to security and compliance requirements.
+They’ve noted that:
+BrowserStack devices currently do not support access to a real wallet app, which is required to simulate tokenized transactions using CRYPTOGRAM_3DS.
+As a result, their Google Pay flows cannot be validated in the current BrowserStack setup.
+Could you confirm:
+If support for real wallet apps (or CRYPTOGRAM_3DS flows) is on our roadmap?
+Whether there are any known workarounds,or alternative approaches they can explore?
+If available, an approximate timeline or status update for this feature?",,,
+"From
+@melvin
+@df-product
+Product: L
+OS: Android
+Feature: Google Pay
+Query:
+One of our customers reverted with the below findings after testing Google Pay.
+
+-- BrowserStack devices currently do not support access to a real wallet app, which is essential for simulating tokenized card transactions using CRYPTOGRAM_3DS.
+
+-- Our integration is configured to use only CRYPTOGRAM_3DS, explicitly excluding PAN_ONLY, due to security and compliance requirements.
+
+-- Since PAN_ONLY is generally the only supported method in the BrowserStack environment, this causes an incompatibility for our use case.
+
+Given this, our testing scope using BrowserStack will be limited when it comes to validating Google Pay flows that require CRYPTOGRAM_3DS.
+
+Could you confirm whether there are any upcoming changes or workarounds we should be aware of?
+In one of the older threads we found that we do not support CRYPTOGRAM_3DS for Google Pay.. Is it still the case?
+Could you please help with
+-- ""Could you confirm whether there are any upcoming changes or workarounds we should be aware of?""",,,
+"Hi @device-features-ops
+can you please disable frida layer for the following user
+User ID: 8915320
+Group ID: 8829471",,,
+"From: @parth.ba
+@device-features-ops
+Which feature is issue related to?
+Biometric authentication
+For which OS?
+Android
+Product?
+AppAutomate
+What is the issue?
+Issue: The biometric popup not visible
+Please describe the issue (in detail)
+Hi team
+The customer has raised an issue saying that Auth popup is not visible in the session.
+Session ID: 0bf7f38ffbacbebc5f2d4a0cea223a5f20a4d996
+I referred the internal docs here: https://browserstack.atlassian.net/wiki/spaces/ENG/pages/4261478622/Biometrics+Authentication+-+Android#For-CE-and-Support
+And I checked the device logs and found the below line
+MockBiometricPrompt:Failed to show Pop up, passing by default
+Attached the image in the thread
+Following the next steps, I tried on G2 account and it worked
+Working session: e27c2aaebb7c94880ce4cb2190a365e16a805ac1
+As mentioned in the docs below
+https://browserstack.atlassian.net/wiki/spaces/ENG/pages/4261478622/Biometrics+Authentication+-+Android#Step4%3A-Check-if-ou[…]le-to-show-Biometrics
+What happens if ?
+App works as after testing on Group 2:
+Take a note of all the above debugging done and raise thread on #help-device-features sharing all the above details.
+Tag @df-product to enable “Frida” for the customer’s account ( Share GID ).
+I am raising it here and I request you to please enable Frida for the below GID:
+GID: 7788315
+Please let me know if there is any mistake in the above flow of debugging
+Expected Behaviour
+Mentioned
+Actual Behaviour
+Mentioned
+Share debugging done (in detail)
+Mentioned
+Steps to reproduce the issue
+Open app
+Login
+Username: 011423949
+Pass: Test121212!
+Enable biometric auth
+Please select your following role
+Support Engineer",,,
+"From: @Yashvi Satam
+@device-features-ops
+Which feature is issue related to?
+Video injection
+For which OS?
+iOS
+Product?
+AppLive
+What is the issue?
+Injected video is not being selected; instead, the app captures a live recording from the device.
+Please describe the issue (in detail)
+It appears that the video is being ""injected"", but when attempting to attach a video inside the app, it pulls the video from the device’s camera rather than using the injected source. This issue occurs during a media capture workflow where selecting a video from the device library is not a valid workaround.
+Expected Behaviour
+Once the video capture workflow is triggered, the injected video should be automatically selected and uploaded to the app.
+Actual Behaviour
+The app captures a new live recording (with a black screen) and uploads that instead of using the injected video.
+Share debugging done (in detail)
+Step 1: Signed the app locally and tested on a handheld iPhone device. The workflow worked as expected.
+Step 2: Confirmed with the customer that there is no anti-tampering mechanism. The app does not crash during testing.
+Step 3: Checked API compatibility:
+Tried on multiple iPhone devices.
+On iPhone 13: found AVCaptureVideoDataOutput log line.
+On iPhone 15 and iPhone 16 Plus: this log line was not observed.
+Issue persists across all tested devices.
+Step 4: Confirmed that the app has a valid use case for video injection. The scenario involves recording a new video and uploading it through the app. Using a video from the device's existing library does not fulfill the use case.
+Step 5: Checked for padding-related issues by uploading a video captured on a physical iPhone device. Issue still persists, so padding is not likely the cause.
+Steps to reproduce the issue
+Log in to the app using the following details:
+Account: origamimobile
+Environment: pre-prod
+Passcode (shared login): 656565 (select login with passcode)
+After logging in, navigate to:
+Forms → Audit → New
+Select the Media form template titled ""Susannah's Media Form""
+Click on the dropdown and proceed with the workflow to record and attach a video within the form.
+Please select your following role
+Customer Engineer",,,
+"From
+@Aasit Vora
+@device-features-ops
+Product: AL
+OS: Android
+Feature: Others
+Query:
+Good Day team. Wanted to ask few questions if the following features are available on AL as I could not find them in docs.
+Crashing Apps (not to be confused with terminate)
+App Updates
+Mocking Proximity sensor
+Mocking NFC",,,
+"@device-features-ops the following devices were already a part of us-west-1e 65.74.165.193 iOS VoiceOver setup in production - ref
+iPhone 16 Pro - 18.0 -> 00008140-001A49C204A2201C
+iPhone 16 Pro - 18.0 -> 00008140-001E38D40EE3001C
+iPhone 16 Pro - 18.0 -> 00008140-00067C622422201C
+These devices were later updated to support SIM sessions as well - ref, with their roles changed to [:live_terminal, :automate_terminal, :app_terminal, :esim_terminal] and [:voiceover_terminal] removed
+As a result, we began encountering NTAs for iOS VoiceOver sessions on these devices
+We would appreciate your help in addressing the following points
+What steps can be taken to resolve this issue?
+ideally, we’d like you to remove these devices from the SIM role, as setting up the new VO devices will be very time-consuming due to its complexity
+it would be helpful if you could proceed with the deployment of https://github.com/browserstack/bsconfigurations/pull/8741
+How can we ensure that no further modifications are made to the existing iOS VoiceOver setup unless explicitly requested by the Live team?
+cc @Harshad Mulmuley (edited) ",,,
+"From: @simran.b
+@device-features-ops
+Which feature is issue related to?
+Other
+For which OS?
+iOS
+Product?
+AppAutomate
+What is the issue?
+Change Time not working
+Please describe the issue (in detail)
+Change time is not working
+session https://app-automate-k8s-mobile.bsstag.com/builds/9d0e6573bb924e09b1ee637d2f66759c8caf6006/ses[…]ec8d278e8e9623cc6f7049265231feb9786073a3bb81dcfc1dd
+Expected Behaviour
+Time should changed properly
+Actual Behaviour
+if I set time as 9:14, its being set as 9:26
+Share debugging done (in detail)
+https://app-automate-k8s-mobile.bsstag.com/builds/9d0e6573bb924e09b1ee637d2f66759c8caf6006/ses[…]ec8d278e8e9623cc6f7049265231feb9786073a3bb81dcfc1dd
+Steps to reproduce the issue
+Change time executor
+Please select your following role
+Other",,,
+"From: @rayan.b
+@device-features-ops
+Which feature is issue related to?
+Video injection
+For which OS?
+Android
+Product?
+AppLive
+What is the issue?
+Video Injection Feature not working on Android
+Please describe the issue (in detail)
+A customer is unable to complete video recording using the video injection feature on App Live.
+App: Uses the CameraX library
+Issue: The app detects the injected video (a ""perfect hold still"" notification appears), but the recording process fails to complete. Works fine on IOS devices but not on all android devices.
+Expected Behaviour
+Record button is pressed, you can see the ""perfect, hold still "" flag is shown, once this is triggered, a blue circle loads indicating that the record phase is successful and the video should be captured  on the app.
+Actual Behaviour
+""Perfect Hold Still"" flag shows up but the recording phase isn't completed
+Share debugging done (in detail)
+Have confirmed the feature works perfectly on a signed, local version of the app.
+The customer also states there are no anti-tampering measures in place
+Have also tried with multiple video uploads so the padding issue can also be ruled out.
+ (MockImageReader:acquireLatestImage: acquired latest image flag shows up in the logs) . so the injection phase is successfully completed
+Steps to reproduce the issue
+Setup video injection on the app
+Click on record and wait for flag to show up. 
+Please select your following role
+Customer Engineer",,,
+"Hi @device-features-ops, we are releasing a new version of Appium (2.18.0) and are upgrading WDA from 8.3.3 to 9.2.4. Currently, the PR is in canary. Please verify your canary metrics and provide GTG for the new Appium and WDA. ( Need this by 10:30 AM India Time tomorrow as per  canary timelines)",,,
+"Hi @device-features-ops
+ Issue : Fluctuations in MotionMark Benchmarking Scores ( for both Android + iOS ) , Notable inconsistencies were observed in MotionMark benchmarking scores when run across sessions on the same device.
+Observation:
+The same benchmarking URLs were executed multiple times in a single session.
+Expected minor fluctuations due to varying CPU/hardware loads.
+Suggestion to Customer:
+Run benchmarking tests across multiple same model devices instead of repeating tests within the same session.
+Customer Concern:
+Device Index (0, 2) indicated two different sessions on the same device, yet the first run scores differed significantly.
+Shared sessions for reference:
+Session 1
+Session 2
+Point noted from the attached Excel sheet showing data discrepancies.",,,
+"From
+@rayan.b
+@df-product
+Product: AL
+OS: Android
+Feature: Video Injection
+Query:
+A customer is unable to complete video recording using the video injection feature on App Live.
+App: Uses the CameraX library.
+Issue: The app detects the injected video (a ""perfect hold still"" notification appears), but the recording process fails to complete.
+Context: We have confirmed the feature works perfectly on a signed, local version of the app. The customer also states there are no anti-tampering measures in place.
+The cx has provided consent for using their application and a sample recording as well.",,,
+"From
+@Yashwant Gaddam
+@device-features-ops
+Product: AL
+OS: NA
+Feature: Image Injection
+Query:
+UID: 9783376
+GID: 6598662
+Ticket: 1393928
+We have a user whose Image Injection workflow involves the following steps:
+Open the Application >> Click on the option for registration >> This opens a Web-view.
+Then the details are filled and the image needs to be injected. The camera is being opened, and image is not getting injected.
+We want to confirm if App Injection works with Web-view?
+cc: @live-support-team  @Palvi Varma",,,
+"From
+@Nisma Shaikh
+@df-product
+Product: AL
+OS: NA
+Feature: Others
+Query:
+Hi Team,
+Case-https://browserstackhelp.freshdesk.com/a/tickets/1399793
+Group-6962441
+Product- AppLive
+Can you please enable Contact App for this group?",,,
+"From
+@Sushanth Poojary
+@device-features-ops
+Product: AL
+OS: Android
+Feature: Image Injection
+Query:
+Hi Team,
+We have a customer using the image injection feature on App Live and facing an issue when attempting to scan multiple images sequentially using a scanner within their app.
+Use Case:
+The app has a scanner interface that expects two images to be scanned sequentially (e.g., 0/2 → 1/2 → 2/2).
+The user injects the first image, and the app correctly registers it (counter changes to 1/2).
+On injecting the second image, the scanner does not detect it immediately, and the counter stays at 1/2.
+If the user closes and reopens the scanner, the second image appears and is detected, but then the first image needs to be scanned first and this cant be done
+The use case requires both images to be scanned one after the other within the same scanner session.
+Questions:
+Is this expected behavior with current image injection implementation?
+Are there any workarounds possible that could allow multiple sequential image scans?
+I advised the user to try video injection showing both images sequentially, but the user wants to know if there is any way to use Image Injection
+cc: @live-support-team
+Ticket: https://browserstackhelp.freshdesk.com/a/tickets/1398019",,,
+"@device-features-ops Someone has reported us that they are not able to upload crt files but are able to upload  cer files and some other extension .Can we know why these crt are blocked also if we can whitelist a user for this case.
+Ref Page. slack thread.
+Can we have a look here on priority please
+cc:
+@Pratik Jain (edited) 
+
+
+
+Zenith Mehta
+MoM of Today's call : TD/BrowserStack debug session
+Friday, June 6⋅8:00 – 10:30
+Call Attendees : @Madiha Sheikh @Dustin Grimes @Zenith Mehta @Mayank Chaurasia @Winston Pais, From TD - Sagunesh, Tarun, sushil
+For the Black screen issue   Previously Ongoing Slack thread : https://browserstack.slack.com/archives/CRUHK8456/p1749154382299759 / https://browserstack.slack.com/archives/CQ2LAHVGW/p1749209810977999
+We had @Winston Pais from Live Engineering Team with us for this
+[ @Winston Pais please attach your notes here as well ]
+More context after the call :
+This is now happening on android as compared earlier to IOS ( in some session it doesnt show black screen )
+Session Details for this :
+GID - 9470840
+user id -> 9562760
+email -> sagunesh.grover@td.com
+f34be7f9e753ec21834c219c5c6d377a1ac8394a -> andorid black screen
+bd4482146093e13c81b9413166e3e728101c5880 -> android black screen
+For some session which opens in IOS -> we still get ""no internet connection"" in the App still
+We have asked the customer to send the .har file as well for this black screen session
+For App Upload via UI, not working on IOS   Previously Ongoing Slack thread : https://browserstack.slack.com/archives/CRUHK8456/p1749149657918579?thread_ts=1748890539.734889&cid=CRUHK8456
+More context after the call :
+We have asked the customer to send the .har file as well for this black screen session
+For Certificates issue  Previously Ongoing Slack thread : https://browserstack.slack.com/archives/CRUHK8456/p1749149479411799?thread_ts=1748894065.779439&cid=CRUHK8456
+We had @Mayank Chaurasia from App Live Engineering for this on the call
+For Android :
+As suggested by @Avideep Gabhawala @Tirth Shah on the thread, First we tried converting the different formats to .cer, but we couldn't convert the .crt one
+openssl x509 -in certificate.crt -out certificate.cer -outform PEM
+openssl x509 -in certificate.crt -out certificate.cer -outform DER
+
+openssl x509 -in certificate.crt -out certificate.cer -outform DER
+unable to load certificate
+140591502489408:error:0909006C:PEM routines:get_name:no start line:crypto/pem/pem_lib.c:745:Expecting: TRUSTED CERTIFICATE
+openssl x509 -in certificate.crt -text -noout
+then we were able to upload that .crt file via file injection and customer verified the installation with the help of @Mayank Chaurasia [ Certificate management app -> Trusted credentials -> User tab ]
+then they mentioned they need their certificates in certain order, which they will sync with their cert expert sushil internally and get back to us, to answer if the uploaded certs worked perfectly or not
+For IOS :
+There is workaround like android to upload the .crt format ( so the customer will check internally to see if its possible from their end to convert the .crt to .cer format )
+also we @Mayank Chaurasia had enabled access to settings for one of their session, to verify if the certs ( in .cer ) format were getting uploaded, which we could see in the attached image
+also we have asked the customer to send a recording of their local ios setup with their certs getting installed in it ( since there might some configurations that needs access to settings )
+ @Mayank Chaurasia suggested for that Dedicated devices if there are some changes (edited) ",,,
+"From
+@Khunsha Farooq
+@df-product
+Product: L, AUT
+OS: iOS
+Feature: Apple Pay
+Query:
+One of my customers (GID: 4141035) has a use case involving Apple Pay. They would like to know if it's possible to test a scenario on BrowserStack where users can add items such as tickets (e.g., amusement park tickets) to the Apple Wallet via their e-commerce website.
+Could you please confirm if this is supported on our platform?",,,
+"From
+@Sushanth Poojary
+@df-product
+Product: AL
+OS: Android
+Feature: Biometrics Authentication
+Query:
+Group ID: 7788315
+User ID: 2517462
+Plan Name: Enterprise App Live - Team Pro (Annual)
+The above user is using the Biometric authentication feature and is able to see the Pass and Fail popup
+However, they are unable to login to their application with Pass and getting an error message
+As per the investigation the CE had suggested the below three options to the customer since the change in signature was casuing the issue:
+1) Add BrowserStack's certificate to a list of approved certificates. During the App's signature check we add logic to accept either Fidelity's cert OR BrowserStack's cert. This seems to be the least intrusive and most sustainable solution here.
+2) Disable App Signature Check for Dev Builds on BrowserStack. This works by skipping the signature check altogether so it doesn't matter which certificate the application is signed with.
+3) Frida Signing + Offline Patching. Similar to the process from today's debug session, BrowserStack would patch the application to use our Biometric Authentication methods and then Fidelity would need to resign the application using an API. BrowserStack would need to build support for this API which is currently supported for non-Frida signing.
+The customer wants to go with the first option and would like to confirm whether it’s a viable option. To proceed, would you be able to share the SHA-256 digest key (64-character alphanumeric) of the certificate used to sign the app when it’s uploaded to BrowserStack?
+This would allow them to integrate the key into their app signature verification logic for non-production builds. It would be an ideal and straightforward solution, avoiding the need for offline patching as per the customer.
+Ticket: https://browserstackhelp.freshdesk.com/a/tickets/1393510
+cc: @live-support-team",,,
+"From: @jameel
+@device-features-ops
+Which feature is issue related to?
+Apple Pay
+For which OS?
+iOS
+Product?
+AppLive
+What is the issue?
+Apple Pay is Prompting for Password
+Please describe the issue (in detail)
+One of my customers is trying to use Apple Pay on App Live. They are installing app via Test Flight. Once the card is added and they try to make a payment, they are prompted to enter Apple ID password for apple_sandbox_002@browserstack.com.
+They are able to pay with Apple using iPhone 14 device after doing the following steps:
+Enable the “AssistiveTouch” but this is tedious, as they had to try multiple times.
+Add the test card to the ApplePay wallet manually. It is hard to enter the numbers blindly as they are not visible in App Live.
+Group ID: 4191234
+User ID: 3698372
+Expected Behaviour
+Apple Pay should not prompt for the password.
+Actual Behaviour
+Apple Pay prompts for the password.
+Share debugging done (in detail)
+Similar issue was faced by a customer earlier also: https://browserstack.slack.com/archives/C01TT7AF2PL/p1724964222075209
+Steps to reproduce the issue
+I was not able to reproduce this issue on my end.
+Please select your following role
+Customer Engineer (edited) ",,,
+"From
+@Khunsha Farooq
+@device-features-ops
+Product: AL
+OS: Android
+Feature: Video Injection
+Query:
+One of my customers is currently facing an issue with video injection in App Live. In their flow, they’re also performing biometric authentication and image injection—both of which are working as expected. For video injection, they’re also using the supported API.
+From what I understand, the issue seems to be related to padding or alignment during video injection. The use case appears to involve a liveness detection flow, where the user’s face needs to be scanned and aligned within a circular region.
+I’ve asked the customer to try with a few different videos to ensure the face fits within the required region for the scan to pass. However, the customer has responded with the following concern:
+""But how do I know which video will work? Do I need to record multiple videos? Don’t you have a specific format that is known to work in App Live?""
+We do not have access to their app, so it’s a bit difficult to test this on our end. Could you please help with guidance or a recommended format/specification for videos that are compatible with App Live’s video injection, particularly for liveness detection use cases?
+cc: @Tushar Madaan",,,
+"From: @sahej
+@device-features-ops
+Which feature is issue related to?
+Image injection
+For which OS?
+Android
+Product?
+AppAutomate
+What is the issue?
+App crashing when the app is opened with the camera portion
+Please describe the issue (in detail)
+Customer is having an application which has a use case of taking the image via the camera and upload it for passport verification process. They are using appium + cucumber and legacy way. The camera api which they are calling inside the app and the versions for it are given below:
+def camerax_version = ""1.3.2""
+implementation ""androidx.camera:camera-core:${camerax_version}""
+implementation ""androidx.camera:camera-camera2:${camerax_version}""
+implementation ""androidx.camera:camera-lifecycle:${camerax_version}""
+implementation ""androidx.camera:camera-view:${camerax_version}""
+Expected Behaviour
+When the camera permission is given, it should take the picture and then move ahead in the next steps. The face should be still for 3 secs and then the image is been taken.
+Actual Behaviour
+Customer is not able to perform the image injection functionality because the app is getting crashed when we reach to the step where we give the access to the camera to work.
+Share debugging done (in detail)
+I tried to perform the image injection on our sample app with the same framework and it worked as expected.
+Next I tried to run on app live platform with the customer's app and it crashed on that platform.
+I tried to download the app on a real device and then tried to run it and it was working as expected on my real android device.
+I refered this doc and searched for any requests which are failing with the API call for camera2. But in the raw and device logs I didnt find anything with the same request.
+Steps to reproduce the issue
+Open the app and enter the phone number: 4242424242 / 2424242424
+enter the OTP: 000000
+click on the filter icon and select the citizenship as india
+in the search bar, enter any destination and select it.
+click on start visa at the bottom of the screen and then select any date
+Here is where you have to click on ""Retake selfie"" and then the permission comes.
+After this step, a pop comes up saying camera permission denied but we just need to click somewhere outside the screen and it will go. In the real devices also i am getting this, but still i am able to click the picture.
+Please select your following role
+Customer Engineer",,,
+"Hi @df-product
+FD - https://browserstackhelp.freshdesk.com/a/tickets/1394959
+GID - 4936488
+The customer is requesting for certificate-based authentication feature to use .pfx certificates. Could you please enable this feature for the above GID on App Automate?
+Reference - Test certificate-based authentication",,,
+"From
+@Shifa Afreen
+@df-product
+Product: AUT
+OS: iOS
+Feature: Apple Pay
+Query:
+Hi @df-product
+Quick question regarding the newly launched Playwright support on real iOS devices on Automate.
+We have a customer interested in knowing whether Apple Pay is supported on Playwright iOS sessions. I went through the documentation here: https://www.browserstack.com/docs/automate/playwright/playwright-ios — but couldn’t find any mention of Apple Pay support.
+Can you please confirm if Apple Pay functionality is supported in Playwright iOS as of now? And if not, is it on the roadmap?
+Thanks!",,,
+"From: @Ansel Dsouza
+@device-features-ops
+Which feature is issue related to?
+Apple Pay
+For which OS?
+iOS
+Product?
+Live
+What is the issue?
+Intermittently fails to add card.
+Please describe the issue (in detail)
+When adding a card for Apple Pay the flow intermittently fails. We tried on G2. UID: 4228245 and 6214459
+A customer also reported this however we are still getting more details if it is isolated to certain providers etc.
+Expected Behaviour
+Should add the card as expected.
+Actual Behaviour
+Goes in a loop trying to add the card and then fails. This doesnt happen for all sessions but for quite a few.
+Share debugging done (in detail)
+Tried multiple sessions.
+Steps to reproduce the issue
+Add the card
+Please select your following role
+Customer Engineer",,,
+"From
+@Manoj Kumar Masini
+@device-features-ops
+Product: AA
+OS: Android
+Feature: Others
+Query:
+FD - https://browserstackhelp.freshdesk.com/a/tickets/1387750
+Please confirm whether the GID: 3793861 is enabled with contacts app.
+The user is trying to launch the call app, but it closes immediately after opening.",,,
+"From
+@Prajakta Pednekar
+@df-product
+Product: AL
+OS: Android, iOS
+Feature: Apple Pay
+Query:
+One of my customer Tillster (Group ID: 2965199) were able to use Apple Pay/Google Pay till last week and now they're not able to use it the options seems to be disabled for them, their free trial is not expired. Could you please help here?
+cc: @Shifa Afreen, @Sivasubramanian Thiagarajan",,,

@@ -86,3 +86,4 @@ coverage.xml
 
 # Slack bot specific
 slack_events.log
+eval/evaluation_results_*
