@@ -16,7 +16,7 @@ from eval.evaluation_runner import EvaluationRunner
 
 async def test_evaluation():
     """Test the evaluation with just a few threads."""
-    max_threads = 10  # Test with just 3 threads
+    max_threads = 1000  # Test with just 3 threads
     print(f"🧪 Testing Evaluation Runner with first {max_threads} threads...")
 
     # Configuration for testing

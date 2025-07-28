@@ -156,8 +156,8 @@ class EvaluationRunner:
         except (ValueError, RuntimeError, AttributeError) as e:
             logger.error("Error getting categorization: %s", str(e))
             return "unknown"
-
-    def write_output_csv(self, results: List[Dict[str, Any]]) -> None:
+        
+    def write_headers_csv(self) -> None:
         """
         Write results to output CSV file.
 
@@ -180,11 +180,40 @@ class EvaluationRunner:
 
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
                 writer.writeheader()
+            
+            logger.info("Headers written to %s", self.output_csv_path)
 
-                for result in results:
-                    writer.writerow(result)
+        except (IOError, csv.Error) as e:
+            logger.error("Error writing output CSV: %s", str(e))
+            raise
 
-            logger.info("Results written to %s", self.output_csv_path)
+
+    def write_output_csv(self, result: Dict[str, Any]) -> None:
+        """
+        Write results to output CSV file.
+
+        Args:
+            results: List of result dictionaries
+        """
+        try:
+            # Ensure output directory exists
+            os.makedirs(os.path.dirname(self.output_csv_path), exist_ok=True)
+
+            with open(self.output_csv_path, 'a', newline='', encoding='utf-8') as file:
+                fieldnames = [
+                    'Thread',
+                    'Predicted category',
+                    'AI Response',
+                    'Remarks',
+                    'Processing Status',
+                    'Timestamp'
+                ]
+
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+                writer.writerow(result)
+
+            logger.info("Result written to %s", self.output_csv_path)
 
         except (IOError, csv.Error) as e:
             logger.error("Error writing output CSV: %s", str(e))
@@ -209,6 +238,8 @@ class EvaluationRunner:
         if max_threads:
             threads = threads[:max_threads]
             logger.info("Limited to first %d threads for testing", max_threads)
+
+        self.write_headers_csv()
 
         # Process threads
         results = []
@@ -246,11 +277,11 @@ class EvaluationRunner:
 
             results.append(result)
 
-            # Add small delay to avoid rate limiting
-            await asyncio.sleep(1)
+            # Write results
+            self.write_output_csv(result)
 
-        # Write results
-        self.write_output_csv(results)
+            # Add small delay to avoid rate limiting
+            await asyncio.sleep(3)
 
         # Print summary
         self.print_summary()
